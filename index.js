@@ -13,7 +13,11 @@ const {login} = require('./controllers/authController');
 // const setUserMiddleware = require('./middlewares/setUserMiddleware');
 
 ///////////////////////////////////////////////////////////////
-const allowedOrigins = ['http://localhost:3000' , 'https://taleem.help']; 
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://taleem.help',
+  'http://165.232.188.213'
+];
 
 const corsOptions = {
   origin: (origin, callback) => {
@@ -23,6 +27,7 @@ const corsOptions = {
       callback(new Error('Not allowed by CORS'));
     }
   },
+  credentials: true, // Allow credentials (important for cookies/auth)
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   exposedHeaders: ['Content-Range', 'X-Content-Range'],
@@ -30,9 +35,8 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-// Ensure OPTIONS requests return proper headers
-app.options('*', cors(corsOptions));
-// app.use(setUserMiddleware);
+app.options('*', cors(corsOptions)); // Ensure OPTIONS preflight is handled
+
 
 ///////////////////////////////////////////////////////////////
 // Add JSON parsing middleware
