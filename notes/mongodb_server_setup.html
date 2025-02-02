@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setting Up MongoDB in Docker and Connecting with Node.js</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+</head>
+<body>
+    <h1>Setting Up MongoDB in Docker and Connecting with Node.js</h1>
+    
+    <h2>Introduction</h2>
+    <p>MongoDB is a powerful NoSQL database widely used for modern web applications. Running MongoDB in a Docker container provides flexibility and isolation while keeping the setup minimal and efficient.</p>
+    <p>In this guide, we'll cover the complete process of:</p>
+    <ul>
+        <li>Running a MongoDB container</li>
+        <li>Creating an admin user</li>
+        <li>Connecting to MongoDB from a Node.js application</li>
+    </ul>
+    
+    <h2>1. Running a MongoDB Container</h2>
+    <p>To start a MongoDB instance in Docker, run the following command:</p>
+    <pre>
+<code>sudo docker run -d \ 
+--name local_mongo \ 
+--network=host \ 
+-v mongodb_data:/data/db \ 
+mongo:latest</code>
+    </pre>
+    <p>This command:</p>
+    <ul>
+        <li>Runs MongoDB in detached mode (<code>-d</code>).</li>
+        <li>Names the container <code>local_mongo</code>.</li>
+        <li>Uses the host network for direct accessibility.</li>
+        <li>Mounts a volume <code>mongodb_data</code> to persist data.</li>
+        <li>Uses the latest MongoDB image.</li>
+    </ul>
+    
+    <h2>2. Creating an Admin User</h2>
+    <p>By default, MongoDB does not enforce authentication. If authentication is required, we need to create an admin user.</p>
+    <p>First, access the running MongoDB container:</p>
+    <pre>
+<code>docker exec -it local_mongo mongosh</code>
+    </pre>
+    <p>Then, switch to the <code>admin</code> database and create a user:</p>
+    <pre>
+<code>use admin
+
+db.createUser({
+  user: "admin",
+  pwd: "password",
+  roles: [{ role: "root", db: "admin" }]
+})</code>
+    </pre>
+    <p>This creates an <code>admin</code> user with root privileges.</p>
+    
+    <h2>3. Connecting to MongoDB</h2>
+    <p>Now that authentication is enabled, use the following connection string to connect:</p>
+    <pre>
+<code>mongodb://admin:password@167.71.234.92:27017/admin</code>
+    </pre>
+    <p>Breaking this down:</p>
+    <ul>
+        <li><code>admin:password</code> → MongoDB username and password.</li>
+        <li><code>167.71.234.92:27017</code> → Server IP and MongoDB port.</li>
+        <li><code>/admin</code> → Authentication database where the user was created.</li>
+    </ul>
+    
+    <h2>4. Debugging Authentication Issues</h2>
+    <p>If you see an authentication error like:</p>
+    <pre>
+<code>MongoServerError: Authentication failed.</code>
+    </pre>
+    <p>Check if the user exists:</p>
+    <pre>
+<code>use admin
+
+db.getUsers()</code>
+    </pre>
+    <p>If no user appears, recreate it using the previous steps.</p>
+    
+    <h2>Conclusion</h2>
+    <p>By following these steps, you now have a running MongoDB instance inside a Docker container with authentication enabled. This setup ensures data persistence, security, and easy maintenance.</p>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MongoDB Docker Setup & Authentication Guide</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+</head>
+<body>
+    <h1>MongoDB Docker Setup & Authentication Guide</h1>
+    
+    <h2>Run MongoDB Container</h2>
+    <p>To start a MongoDB container with authentication, run:</p>
+    <pre><code>docker run -d \
+  --name taleem-mongo \
+  -p 27017:27017 \
+  -e MONGO_INITDB_ROOT_USERNAME=admin \
+  -e MONGO_INITDB_ROOT_PASSWORD=password \
+  -v mongodb_data:/data/db \
+  mongo:latest</code></pre>
+    
+    <h2>MongoDB Connection Strings</h2>
+    <table>
+        <tr>
+            <th>Scenario</th>
+            <th>Connection String</th>
+        </tr>
+        <tr>
+            <td>Without Authentication (Not Recommended)</td>
+            <td><code>mongodb://localhost:27017</code></td>
+        </tr>
+        <tr>
+            <td>With Authentication (Localhost)</td>
+            <td><code>mongodb://admin:password@localhost:27017/admin</code></td>
+        </tr>
+        <tr>
+            <td>With Authentication (From Another Docker Container)</td>
+            <td><code>mongodb://admin:password@taleem-mongo:27017/admin</code></td>
+        </tr>
+        <tr>
+            <td>With Authentication & Specific Database</td>
+            <td><code>mongodb://admin:password@localhost:27017/mydb</code></td>
+        </tr>
+    </table>
+    
+    <h2>How to Test the Connection</h2>
+    <ol>
+        <li>Log in to the MongoDB Shell:
+            <pre><code>docker exec -it taleem-mongo mongosh -u admin -p password --authenticationDatabase admin</code></pre>
+        </li>
+        <li>Verify User Exists:
+            <pre><code>use admin
+ db.getUsers()</code></pre>
+        </li>
+        <li>Check Databases:
+            <pre><code>show dbs</code></pre>
+        </li>
+        <li>Create a Test Database & Collection:
+            <pre><code>use mydb
+ db.testCollection.insertOne({ name: "Test Data" })
+ db.testCollection.find()</code></pre>
+        </li>
+    </ol>
+    
+    <h2>How to Remove Volumes & Potential Issues</h2>
+    <p>Removing the volume will delete all stored data, including user credentials.</p>
+    
+    <h3>Remove MongoDB Container</h3>
+    <pre><code>docker rm -f taleem-mongo</code></pre>
+    
+    <h3>Remove MongoDB Volume</h3>
+    <pre><code>docker volume rm mongodb_data</code></pre>
+    
+    <h3>Potential Problems After Volume Removal</h3>
+    <ul>
+        <li><strong>Data Loss:</strong> All databases and users will be lost.</li>
+        <li><strong>Authentication Errors:</strong> If MongoDB restarts without proper credentials.</li>
+        <li><strong>Fix:</strong> Restart with fresh credentials using the run command above.</li>
+    </ul>
+    
+</body>
+</html>
