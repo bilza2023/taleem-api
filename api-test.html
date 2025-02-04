@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css">
+</head>
+<body>
+    <button onclick="getWelcomeMessage()">Get Welcome Message</button><br>
+    <button onclick="login()">Login</button><br>
+    <button onclick="getTCode()">Get TCode</button><br>
+    <button onclick="register()">Register</button>
+
+    <script>
+        function getWelcomeMessage() {
+            fetch("https://taleem.help/api", { redirect: "follow" })
+                .then(response => response.json())
+                .then(data => console.log("Welcome Message:", data))
+                .catch(error => console.error("Error:", error));
+        }
+
+        function login() {
+            fetch("https://www.taleem.help/api/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    "email": "admin@gmail.com",
+                    "password": "123456"
+                })
+            })
+            .then(response => response.json())
+            .then(data => console.log("Login Response:", data))
+            .catch(error => console.error("Error:", error));
+        }
+
+        function getTCode() {
+            fetch("https://taleem.help/api/tcode", { redirect: "follow" })
+                .then(response => response.json())
+                .then(data => console.log("TCode Response:", data))
+                .catch(error => console.error("Error:", error));
+        }
+
+        function register() {
+            fetch("https://taleem.help/api/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    "email": "ddd@gmail.com",
+                    "password": "sews3erdf"
+                })
+            })
+            .then(response => response.json())
+            .then(data => console.log("Register Response:", data))
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>

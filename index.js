@@ -12,45 +12,10 @@ const cors = require('cors');
 const {login} = require('./controllers/authController');
 // const setUserMiddleware = require('./middlewares/setUserMiddleware');
 
-///////////////////////////////////////////////////////////////
-const allowedOrigins = [
-  'http://localhost:3000',
-  'https://taleem.help',
-  'http://165.232.188.213'
-];
-
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true, // Allow credentials (important for cookies/auth)
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  exposedHeaders: ['Content-Range', 'X-Content-Range'],
-  maxAge: 600
-};
-
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // Ensure OPTIONS preflight is handled
-
-
-///////////////////////////////////////////////////////////////
-// Add JSON parsing middleware
 app.use(express.json());
-// Environment variables with fallback values
 const PORT = process.env.PORT || 5000;
-
 ///////////////////////////////////////////////////////////////
-//=== Mongo URI ====// 
-// MONGO_URI For 
 const MONGO_URI = process.env.MONGO_URI ;
-// const MONGO_URI = "mongodb://admin:password@local_mongo:27017/localDb?authSource=admin";
-// const MONGO_URI = "mongodb://admin:password@localhost:27017/localDb?authSource=admin";
-
 ///////////////////////////////////////////////////////////////
 const userRouter = new RestfulExpressRouter(User);
 app.use('/user', userRouter.getRouter());
@@ -80,11 +45,6 @@ mongoose.connect(MONGO_URI)
     console.error('MongoDB connection error:', err);
     process.exit(1);
   });
-// mongoose.connect(MONGO_URI, {
-//   authSource: "admin",
-//   user: "admin",
-//   pass: "password"
-// })
 
 ///////////////////////////////////////////////////////////////
 // Home route
