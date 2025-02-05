@@ -2,9 +2,12 @@
 const AWS = require('aws-sdk');
 
 const s3 = new AWS.S3({
-    endpoint: 'https://blr1.digitaloceanspaces.com',
-    accessKeyId: 'DO00KC8ZLNMJ6A3GFNMJ',
-    secretAccessKey: 'aM3v7HFig4mXgZvObPR2UXBEAgICAFmI4P48cZTNmwE'
+    endpoint: `https://${process.env.SPACES_ENDPOINT}`,
+
+    accessKeyId: process.env.SPACES_KEY,
+
+    secretAccessKey: process.env.SPACES_SECRET
+
 });
 
 const listFiles = async (bucket, folder) => {
