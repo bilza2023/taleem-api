@@ -8,9 +8,10 @@ const bcrypt = require('bcrypt');
 const checkAbility = require('./middlewares/authorization/checkAbility');
 const jwtMiddleware = require('./middlewares/jwtMiddleware');
 const RestfulExpressRouter = require('restful_express_router'); 
-const cors = require('cors');
 const {login} = require('./controllers/authController');
+const { listFiles } = require('./utils/s3Utils');
 // const setUserMiddleware = require('./middlewares/setUserMiddleware');
+
 
 app.use(express.json());
 const PORT = process.env.PORT || 5000;
@@ -36,6 +37,27 @@ tcodeRouter.middlewareForUpdate =  [];
 tcodeRouter.middlewareForDelete =  [];
 
 app.use('/tcode', tcodeRouter.getRouter());
+
+///////////////////////////////////////////////////////////////
+
+app.get('/get-images-list', async (req, res) => {
+    try {
+        const files = await listFiles('taleem-media', 'bucket/');
+        res.json({ files });
+    } catch (err) {
+        res.status(500).json({ message: 'Error fetching images list', error: err.message });
+    }
+});
+
+app.get('/get-narrations-list', async (req, res) => {
+    try {
+        const files = await listFiles('taleem-media', 'sound/');
+        res.json({ files });
+    } catch (err) {
+        res.status(500).json({ message: 'Error fetching narrations list', error: err.message });
+    }
+});
+
 
 ///////////////////////////////////////////////////////////////
 // Connect to MongoDB
