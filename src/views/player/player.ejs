@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+<meta charset="UTF-8">
+<title>Taleem Player</title>
 
-<link rel="stylesheet" href="/taleem-player/dist/css/taleem.css">
-<link rel="stylesheet" href="/taleem-player/dist/css/themes/light.css">
-<link rel="stylesheet" href="/taleem-player/dist/css/themes/dark.css">
-<link rel="stylesheet" href="/taleem-player/dist/css/themes/paper.css">
+<link rel="stylesheet" href="/player/themes/default.css">
+<link rel="stylesheet" href="/player/taleem.css">
 
 <style>
+
 body{
 margin:0;
 font-family:sans-serif;
@@ -16,64 +17,143 @@ font-family:sans-serif;
 
 .page{
 display:flex;
-min-height:100vh;
+height:calc(100vh - 60px);
 }
 
 .left{
 flex:1;
 min-width:0;
+display:flex;
+flex-direction:column;
 }
 
 .deck-wrapper{
-height:100vh;
+flex:1;
 }
 
 .sidebar{
 width:320px;
 border-left:1px solid #ddd;
+overflow:auto;
 }
-</style>
 
+.controls{
+height:60px;
+border-top:1px solid #ddd;
+display:flex;
+align-items:center;
+gap:15px;
+padding:0 15px;
+background:#f5f5f5;
+}
+
+.scrub-wrap{
+flex:1;
+}
+
+.scrub-wrap input{
+width:100%;
+}
+
+</style>
 </head>
 
 <body>
 
 <div class="page">
 
-<div class="left">
-<div class="deck-wrapper">
-<div id="deck-area"></div>
-</div>
+  <div class="left">
+
+    <div class="deck-wrapper">
+      <div id="app"></div>
+    </div>
+
+  </div>
+
+  <div class="sidebar">
+    Syllabus placeholder
+  </div>
+
 </div>
 
-<div class="sidebar">
-Syllabus placeholder
-</div>
+
+<div class="controls">
+
+  <button id="play-btn">▶</button>
+  <button id="pause-btn">⏸</button>
+  <button id="stop-btn">⏹</button>
+
+  <span id="time">0.0s</span>
+
+  <div class="scrub-wrap">
+    <input id="scrub" type="range" min="0" max="1" step="0.1">
+  </div>
 
 </div>
+
 
 <script type="module">
 
 import {
-  createTaleemBrowser,
+  createTaleemPlayer,
   resolveAssetPaths,
-  resolveBackground
-} from "/taleem-player/dist/taleem-player.esm.js";
+  resolveBackground,
+  getDeckEndTime,
+  createAudioTimer,
+  createSilentTimer,
+  startLoop
+} from "/player/taleem-player-app.js";
 
 async function init(){
 
-  const res = await fetch("/decks/demo.json");
+  const params = new URLSearchParams(window.location.search);
+  const deckKey = params.get("deck") || "demo";
+
+  const contentBase = "";
+
+  const deckUrl = `${contentBase}/decks/${deckKey}.json`;
+  const imageBase = `${contentBase}/images/`;
+  const audioBase = `${contentBase}/audio/`;
+
+  const res = await fetch(deckUrl);
+
+  if(!res.ok){
+    document.body.innerHTML = "<h2>Deck not found</h2>";
+    throw new Error("Deck not found");
+  }
+
   const deck = await res.json();
 
-  resolveAssetPaths(deck, "/images/");
-  resolveBackground(deck, "/images/");
+  resolveAssetPaths(deck, imageBase);
+  resolveBackground(deck, imageBase);
 
-  const browser = createTaleemBrowser({
-    mount: "#deck-area",
+  let timer;
+
+  if(deck.audio){
+    timer = createAudioTimer(`${audioBase}${deck.audio}`);
+  }else{
+    timer = createSilentTimer();
+  }
+
+  const player = createTaleemPlayer({
+    mount: "#app",
     deck
   });
 
-  browser.render(0);
+  const duration = getDeckEndTime(deck);
+
+  startLoop({
+    player,
+    timer,
+    duration,
+    ui:{
+      playBtn: document.getElementById("play-btn"),
+      pauseBtn: document.getElementById("pause-btn"),
+      stopBtn: document.getElementById("stop-btn"),
+      scrub: document.getElementById("scrub"),
+      timeEl: document.getElementById("time")
+    }
+  });
 
 }
 
