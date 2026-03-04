@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<link rel="stylesheet" href="/taleem-player/dist/css/taleem.css">
+<link rel="stylesheet" href="/taleem-player/dist/css/themes/light.css">
+<link rel="stylesheet" href="/taleem-player/dist/css/themes/dark.css">
+<link rel="stylesheet" href="/taleem-player/dist/css/themes/paper.css">
+
+<style>
+body{
+margin:0;
+font-family:sans-serif;
+}
+
+.page{
+display:flex;
+min-height:100vh;
+}
+
+.left{
+flex:1;
+min-width:0;
+}
+
+.deck-wrapper{
+height:100vh;
+}
+
+.sidebar{
+width:320px;
+border-left:1px solid #ddd;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="page">
+
+<div class="left">
+<div class="deck-wrapper">
+<div id="deck-area"></div>
+</div>
+</div>
+
+<div class="sidebar">
+Syllabus placeholder
+</div>
+
+</div>
+
+<script type="module">
+
+import {
+  createTaleemBrowser,
+  resolveAssetPaths,
+  resolveBackground
+} from "/taleem-player/dist/taleem-player.esm.js";
+
+async function init(){
+
+  const res = await fetch("/decks/demo.json");
+  const deck = await res.json();
+
+  resolveAssetPaths(deck, "/images/");
+  resolveBackground(deck, "/images/");
+
+  const browser = createTaleemBrowser({
+    mount: "#deck-area",
+    deck
+  });
+
+  browser.render(0);
+
+}
+
+init();
+
+</script>
+
+</body>
+</html>

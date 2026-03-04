@@ -4,12 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node src/server.js"
+    "dev": "node src/server.js",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^5.2.1"
+    "@prisma/client": "^5.22.0",
+    "ejs": "^4.0.1",
+    "express": "^5.2.1",
+    "prisma": "^5.22.0",
+    "taleem-player": "^1.0.17"
+  },
+  "devDependencies": {
+    "jest": "^30.2.0"
   }
 }
