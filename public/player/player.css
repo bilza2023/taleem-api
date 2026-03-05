@@ -1,0 +1,104 @@
+html, body{
+    height:100%;
+    margin:0;
+    font-family:sans-serif;
+    }
+    
+    #app{
+    height:100%;
+    }
+    
+    .page{
+    display:flex;
+    height:100vh;
+    }
+    
+    .left{
+    flex:1;
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    }
+    
+    .deck-wrapper{
+    flex:1;
+    overflow:hidden;
+    }
+    
+    /* NAVBAR */
+    
+    .navbar{
+    height:40px;
+    display:flex;
+    align-items:center;
+    padding:0 10px;
+    gap:8px;
+    border-top:1px solid #ddd;
+    background:#fff;
+    }
+    
+    .left-controls{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex:1;
+    }
+    
+    .right-controls{
+    display:flex;
+    gap:8px;
+    }
+    
+    .scrub-wrap{
+    flex:1;
+    display:flex;
+    align-items:center;
+    }
+    
+    .scrub-wrap input{
+    width:100%;
+    }
+    
+    button,a{
+    background:none;
+    border:none;
+    cursor:pointer;
+    font-size:16px;
+    text-decoration:none;
+    color:inherit;
+    }
+    
+    /* SIDEBAR */
+    
+    .sidebar{
+    width:320px;
+    border-left:1px solid #ddd;
+    overflow:auto;
+    transition:width .25s;
+    }
+    
+    .sidebar.closed{
+    width:0;
+    overflow:hidden;
+    border-left:none;
+    }
+    
+    /* ANSWER PANEL */
+    
+    .dim-text{
+    position:fixed;
+    left:0;
+    right:320px;
+    bottom:40px;
+    
+    height:60px;
+    border-top:1px solid #ddd;
+    
+    display:flex;
+    align-items:center;
+    padding:0 12px;
+    
+    background:#fafafa;
+    color:#666;
+    font-size:14px;
+    }
