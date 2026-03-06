@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
 
 const vid = req.query.v || 'demo';
 
-res.render('player/player', {
+res.render('player', {
 vid
 });
 

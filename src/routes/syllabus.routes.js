@@ -1,4 +1,3 @@
-
 const express = require('express')
 const router = express.Router()
 
@@ -7,9 +6,9 @@ const path = require('path')
 
 router.get('/', (req, res) => {
 
-  const course = req.query.course
+  const slug = req.query.course
 
-  if (!course) {
+  if (!slug) {
     return res.send('course not specified')
   }
 
@@ -17,22 +16,19 @@ router.get('/', (req, res) => {
     process.cwd(),
     'public',
     'data',
-    'links',
-    `${course}.json`
+    'courses',
+    `${slug}.json`
   )
 
   if (!fs.existsSync(filePath)) {
     return res.send(`course file not found: ${filePath}`)
   }
 
-  const chapters = JSON.parse(
-    fs.readFileSync(filePath, 'utf8')
+  const course = JSON.parse(
+    fs.readFileSync(filePath,'utf8')
   )
 
-  res.render('syllabus', {
-    course,
-    chapters
-  })
+  res.render('syllabus', { course })
 
 })
 

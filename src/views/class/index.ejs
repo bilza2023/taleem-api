@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>Taleem Class</title>
+
+<link rel="stylesheet" href="/player/taleem-player-app.css">
+<link rel="stylesheet" href="/player/player.css">
+<link rel="stylesheet" href="/css/answer.css">
+<link rel="stylesheet" href="/css/syllabus.css">
+<link rel="stylesheet" href="/player/themes/default.css">
+
+</head>
+
+<body>
+
+<div id="player-view" data-chapter="<%= chapter %>">
+
+  <div class="page">
+
+    <div class="left">
+
+      <div class="deck-wrapper">
+        <div id="app"></div>
+      </div>
+
+      <%- include("player-navbar") %>
+
+    </div>
+
+    <%- include("syllabus-panel") %>
+
+  </div>
+
+</div>
+
+<%- include("answer-panel") %>
+
+<script type="module" src="/js/class-page.js"></script>
+
+</body>
+</html>
