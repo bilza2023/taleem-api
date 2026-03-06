@@ -1,14 +1,29 @@
 const express = require('express');
 const router = express.Router();
 
-const syllabus = {
-  chapter: "Dynamics",
-  items: [
-    { title: "Newton First Law", vid: "newton-first-law" },
-    { title: "Newton Second Law", vid: "newton-second-law" },
-    { title: "Newton Third Law", vid: "newton-third-law" }
-  ]
-};
+const syllabus = [
+    {
+      "anchor": "fbise8math-ch1",
+      "title": "Factorization Basics",
+      "deck": "demo",
+      "tag": "concept",
+      "image": "eq.webp"
+    },
+    {
+      "anchor": "fbise8math-ch1",
+      "title": "Understanding Factors",
+      "deck": "bodmas",
+      "tag": "lab",
+      "image": "eq.webp"
+    },
+    {
+      "anchor": "fbise8math-ch2",
+      "title": "Linear Equation Example",
+      "deck": "eq-test",
+      "tag": "example",
+      "image": "eq.webp"
+    }
+  ];
 
 const discussion = [
     {

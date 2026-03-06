@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="/player/player.css">
 <link rel="stylesheet" href="/player/themes/default.css">
 <link rel="stylesheet" href="/css/answer.css">
+<link rel="stylesheet" href="/css/syllabus.css">
 
 </head>
 <body>
@@ -44,25 +45,36 @@ import {
   startLoop
 } from "/player/taleem-player-app.js";
 
-function renderSyllabus(syllabus){
+function renderSyllabus(links){
 
-const title = document.getElementById("syllabus-title");
 const list = document.getElementById("syllabus-list");
 
-if(!syllabus) return;
+if(!links || links.length === 0) return;
 
-title.textContent = syllabus.chapter;
+list.innerHTML = "";
 
-syllabus.items.forEach(item => {
+links.forEach(link=>{
 
-  const li = document.createElement("li");
+  const a = document.createElement("a");
+  a.className = "video-card";
+  a.href = `/player?v=${link.deck}`;
 
-  const link = document.createElement("a");
-  link.href = `/player?v=${item.vid}`;
-  link.textContent = item.title;
+  const img = document.createElement("img");
+  img.className = "thumb";
+  img.src = `/images/${link.image}`;
 
-  li.appendChild(link);
-  list.appendChild(li);
+  const info = document.createElement("div");
+  info.className = "info";
+
+  const title = document.createElement("div");
+  title.className = "video-title";
+  title.textContent = link.title;
+
+  info.appendChild(title);
+  a.appendChild(img);
+  a.appendChild(info);
+
+  list.appendChild(a);
 
 });
 
