@@ -5,9 +5,9 @@
 <meta charset="UTF-8">
 <title>Taleem Player</title>
 
-<link rel="stylesheet" href="/player/themes/default.css">
 <link rel="stylesheet" href="/player/taleem-player-app.css">
 <link rel="stylesheet" href="/player/player.css">
+<link rel="stylesheet" href="/player/themes/default.css">
 
 </head>
 <body>
@@ -43,6 +43,58 @@ import {
   startLoop
 } from "/player/taleem-player-app.js";
 
+function renderSyllabus(syllabus){
+
+const title = document.getElementById("syllabus-title");
+const list = document.getElementById("syllabus-list");
+
+if(!syllabus) return;
+
+title.textContent = syllabus.chapter;
+
+syllabus.items.forEach(item => {
+
+  const li = document.createElement("li");
+
+  const link = document.createElement("a");
+  link.href = `/player?v=${item.vid}`;
+  link.textContent = item.title;
+
+  li.appendChild(link);
+  list.appendChild(li);
+
+});
+
+}
+
+function renderDiscussion(discussion){
+
+const container = document.getElementById("discussion-list");
+
+if(!discussion || discussion.length === 0){
+  container.innerHTML = "<p>No discussion yet.</p>";
+  return;
+}
+
+discussion.forEach(item => {
+
+  const block = document.createElement("div");
+  block.className = "discussion-item";
+
+  const q = document.createElement("h4");
+  q.textContent = item.question;
+
+  const a = document.createElement("p");
+  a.textContent = item.answer;
+
+  block.appendChild(q);
+  block.appendChild(a);
+
+  container.appendChild(block);
+
+});
+
+}
 
 async function init(){
 
@@ -52,6 +104,9 @@ async function init(){
   // fetch presentation package
   const res = await fetch(`/api/presentation/${vid}`);
   const presentation = await res.json();
+
+  const syllabus = presentation.syllabus;
+  const discussion = presentation.discussion;
 
   const imageBase = "/images/";
   const audioBase = "/audio/";
@@ -66,7 +121,12 @@ async function init(){
   } else {
     timer = createSilentTimer();
   }
+///////////////////////////////////////////////////
 
+renderSyllabus(syllabus);
+renderDiscussion(discussion);
+
+///////////////////////////////////////////////////
   const player = createTaleemPlayer({
     mount: "#app",
     deck: presentation
