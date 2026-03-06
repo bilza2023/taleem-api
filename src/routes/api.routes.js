@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const path = require('path');
+const fs = require('fs');
 
 const syllabus = [
     {
@@ -109,10 +111,23 @@ const discussion = [
     }
     ];
 // import deck directly
-const deck = require('../../public/decks/what-is-llm.json');
-
-// GET /api/presentation/demo
 router.get('/presentation/:vid', (req, res) => {
+
+  const { vid } = req.params;
+
+  const deckPath = path.join(
+    __dirname,
+    '../../public/decks',
+    `${vid}.json`
+  );
+
+  if (!fs.existsSync(deckPath)) {
+    return res.status(404).json({
+      error: "Deck not found"
+    });
+  }
+
+  const deck = JSON.parse(fs.readFileSync(deckPath, 'utf8'));
 
   const presentation = {
     ...deck,
@@ -123,5 +138,6 @@ router.get('/presentation/:vid', (req, res) => {
   res.json(presentation);
 
 });
+
 
 module.exports = router;
