@@ -7,6 +7,75 @@
     "backgroundImage": null,
     "backgroundImageOpacity": 0.2
   },
+    
+  "discussion": [
+      {
+        "id": "q1",
+        "question": "What is Newton’s First Law?",
+        "answer": "Newton's First Law states that an object remains at rest or continues moving with constant velocity unless an external force acts on it. Motion does not require a continuous push; objects maintain their state unless a force changes it.",
+        "links": [
+          { "title": "Lesson: What is Force?", "url": "/player?v=what-is-force" },
+          { "title": "Example: Motion and Friction", "url": "/player?v=friction-example" }
+        ]
+      },
+      {
+        "id": "q2",
+        "question": "What is inertia?",
+        "answer": "Inertia is the tendency of an object to resist any change in its state of motion. Objects at rest stay at rest, and moving objects continue moving unless a force acts on them.",
+        "links": [
+          { "title": "Concept: Mass and Inertia", "url": "/player?v=mass-and-inertia" }
+        ]
+      },
+      {
+        "id": "q3",
+        "question": "Why does a passenger move forward when a bus suddenly stops?",
+        "answer": "When a bus stops suddenly, the passenger's body tends to continue moving forward due to inertia until another force acts on it.",
+        "links": [
+          { "title": "Example: Inertia in Vehicles", "url": "/player?v=inertia-vehicles" }
+        ]
+      },
+      {
+        "id": "q4",
+        "question": "Does Newton’s First Law apply only to objects at rest?",
+        "answer": "No. It applies to both objects at rest and objects already moving. They maintain their state unless acted upon by an external force.",
+        "links": [
+          { "title": "Lesson: Uniform Motion", "url": "/player?v=uniform-motion" }
+        ]
+      },
+      {
+        "id": "q5",
+        "question": "Is friction related to Newton’s First Law?",
+        "answer": "Yes. Friction is a force that opposes motion and can change the motion of objects, demonstrating the effect of external forces.",
+        "links": [
+          { "title": "Lesson: What is Friction?", "url": "/player?v=what-is-friction" },
+          { "title": "Experiment: Sliding Objects", "url": "/player?v=friction-experiment" }
+        ]
+      },
+      {
+        "id": "q6",
+        "question": "What is an example of Newton’s First Law in daily life?",
+        "answer": "A book on a table remains at rest until pushed. A bicycle keeps moving forward briefly even after pedaling stops.",
+        "links": [
+          { "title": "Example: Motion of a Bicycle", "url": "/player?v=bicycle-motion" }
+        ]
+      },
+      {
+        "id": "q7",
+        "question": "Why do we wear seat belts in cars?",
+        "answer": "Seat belts prevent passengers from moving forward during sudden stops due to inertia, reducing injuries.",
+        "links": [
+          { "title": "Lesson: Safety and Physics", "url": "/player?v=physics-safety" }
+        ]
+      },
+      {
+        "id": "q8",
+        "question": "Is Newton’s First Law also called the Law of Inertia?",
+        "answer": "Yes. It is called the Law of Inertia because it describes how objects resist changes to their state of motion.",
+        "links": [
+          { "title": "Concept: Laws of Motion Overview", "url": "/player?v=laws-of-motion" }
+        ]
+      }
+    ],
   "deck": [
     {
       "type": "titleAndSubtitle",
@@ -40,4 +109,5 @@
       ]
     }
   ]
+
 }
