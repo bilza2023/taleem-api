@@ -6,8 +6,8 @@ const fs = require('fs');
 const syllabus = [
     {
       "anchor": "fbise8math-ch1",
-      "title": "Factorization Basics",
-      "deck": "demo",
+      "title": "english-words-meaning-demo",
+      "deck": "english-words-meaning-demo",
       "tag": "concept",
       "image": "eq.webp"
     },

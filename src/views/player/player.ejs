@@ -7,27 +7,23 @@
 
 <link rel="stylesheet" href="/player/taleem-player-app.css">
 <link rel="stylesheet" href="/player/player.css">
-<link rel="stylesheet" href="/player/themes/default.css">
 <link rel="stylesheet" href="/css/answer.css">
 <link rel="stylesheet" href="/css/syllabus.css">
+<link rel="stylesheet" href="/player/themes/default.css">
 
 </head>
 <body>
 
-<div id="player-view">
+<div id="player-view">  
   <div class="page">
+    <div class="left">
+      <div class="deck-wrapper">
+        <div id="app"></div>
+      </div>
 
-
-<div class="left">
-  <div class="deck-wrapper">
-    <div id="app"></div>
-  </div>
-
-  <%- include("player-navbar") %>
-</div>
-
-<%- include("syllabus-panel") %>
-
+      <%- include("player-navbar") %>
+    </div>
+    <%- include("syllabus-panel") %>
   </div>
 </div>
 

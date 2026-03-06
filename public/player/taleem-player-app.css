@@ -12,7 +12,9 @@
     -apple-system,
     sans-serif;
   align-items: center;
-  background: var(--backgroundColor, #ffffff);
+  /* background: var(--backgroundColor, #ffffff); */
+  /* background-color: var(--backgroundColor, transparent); */
+  /* background: transparent !important; */
   color: var(--primaryColor, #111111);
 }
 .slide img {
