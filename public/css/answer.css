@@ -1,0 +1,147 @@
+/* ANSWER PANEL */
+
+#answers-view{
+    width:100%;
+    background: color-mix(in srgb, var(--backgroundColor) 30%, white);
+    border-top:1px solid color-mix(in srgb, var(--backgroundColor) 45%, white);
+  }
+  
+  /* CONTAINER */
+  
+  .answers-container{
+    max-width:1100px;
+    margin:auto;
+    padding:32px 24px 40px 24px;
+  }
+  
+  /* HEADER */
+  
+  .answers-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+  }
+  
+  .answers-header h2{
+    margin:0;
+    font-size:22px;
+    color:var(--backgroundColor);
+  }
+  
+  .ask-question-btn{
+    padding:8px 14px;
+    font-size:14px;
+    border-radius:6px;
+    text-decoration:none;
+    background:var(--backgroundColor);
+    color:white;
+  }
+  
+  .ask-question-btn:hover{
+    opacity:0.9;
+  }
+  
+  /* SEARCH */
+  
+  .answers-search{
+    margin-bottom:22px;
+  }
+  
+  #discussion-search{
+    width:100%;
+    padding:10px 12px;
+    border-radius:6px;
+    border:1px solid color-mix(in srgb, var(--backgroundColor) 40%, white);
+    font-size:14px;
+    outline:none;
+  }
+  
+  #discussion-search:focus{
+    border-color:var(--backgroundColor);
+  }
+  
+  /* DISCUSSION LIST */
+  
+  .discussion-list{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  
+  /* DISCUSSION CARD */
+  
+  .discussion-item{
+    background:white;
+    border-radius:8px;
+    padding:16px 18px;
+    border:1px solid color-mix(in srgb, var(--backgroundColor) 35%, white);
+  }
+  
+  .discussion-item h4{
+    margin:0 0 6px 0;
+    font-size:16px;
+    color:var(--backgroundColor);
+  }
+  
+  .discussion-item p{
+    margin:0;
+    font-size:14px;
+    line-height:1.5;
+    color:#444;
+  }
+
+  .discussion-answer{
+    display:none;
+    margin-top:8px;
+    line-height:1.6;
+  }
+  
+  .discussion-item.open .discussion-answer{
+    display:block;
+  }
+  
+  .discussion-question{
+    font-weight:600;
+    cursor:pointer;
+  }
+
+  .discussion-links{
+    margin-top:10px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  
+  .discussion-link{
+    font-size:12px;
+    padding:4px 10px;
+    border-radius:14px;
+    text-decoration:none;
+    border:1px solid var(--backgroundColor);
+    color:var(--backgroundColor);
+  }
+  
+  .discussion-link:hover{
+    background:var(--backgroundColor);
+    color:white;
+  }
+  .discussion-question::before{
+    content: "▶";
+    margin-right:8px;
+    font-size:12px;
+  }
+  
+  .discussion-item.open .discussion-question::before{
+    content: "▼";
+  }
+
+
+
+  .discussion-links{
+  display:none;
+}
+
+.discussion-item.open .discussion-links{
+  display:flex;
+}
