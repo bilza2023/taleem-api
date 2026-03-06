@@ -4,6 +4,7 @@ const app = express();
 const indexRoutes = require('./routes/index');
 const playerRoutes = require('./routes/player.routes');
 const apiRoutes = require('./routes/api.routes');
+const syllabusRoutes = require('./routes/syllabus.routes');   // ← add this
 
 const PORT = process.env.PORT || 3000;
 
@@ -23,6 +24,7 @@ app.set('views', __dirname + '/views');
 app.use('/', indexRoutes);
 app.use('/player', playerRoutes);
 app.use('/api', apiRoutes);
+app.use('/syllabus', syllabusRoutes);   // ← add this
 
 app.listen(PORT, () => {
 console.log(`🚀 Server running on http://localhost:${PORT}`);
