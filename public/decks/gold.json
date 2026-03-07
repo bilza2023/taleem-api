@@ -1,6 +1,7 @@
 
 {
     "version": "deck-v1",
+    "audio" : "music.mp3",
     "name": "Golden Deck V1 – Full Schema Coverage",
     "background": {
       "backgroundColor": "#111111",

@@ -95,8 +95,7 @@ function taleemPlayerApp({
 }
 
 // src/createAudioTimer.js
-import { Howl } from "howler";
-function createAudioTimer(url) {
+function createAudioTimer({ url, Howl }) {
   const sound = new Howl({
     src: [url],
     html5: true
