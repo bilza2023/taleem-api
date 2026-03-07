@@ -1,4 +1,6 @@
 
+import { useMath } from "/js/useMath.js";
+
 import {
   createTaleemPlayer,
   resolveAssetPaths,
@@ -174,6 +176,10 @@ function loop(){
     }
 
     player.renderAt(currentTime);
+
+
+    const slide = document.querySelector("#app .slide");
+    useMath(slide);
 
     const scrub = document.getElementById("scrub");
     const timeEl = document.getElementById("time");

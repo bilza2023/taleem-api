@@ -2,10 +2,24 @@
 [
     {
       "anchor": "fbise8math-ch1",
+      "title": "Golden Deck",
+      "deck": "gold",
+      "tag": "concept",
+      "image": "atom.png"
+    },
+    {
+      "anchor": "fbise8math-ch1",
+      "title": "equation-demo",
+      "deck": "equation-demo",
+      "tag": "concept",
+      "image": "eq.webp"
+    },
+    {
+      "anchor": "fbise8math-ch1",
       "title": "Factorization Basics",
       "deck": "demo",
       "tag": "concept",
-      "image": "eq.webp"
+      "image": "box.webp"
     },
     {
       "anchor": "fbise8math-ch1",

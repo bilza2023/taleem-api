@@ -1,7 +1,9 @@
-import renderMathInElement from "katex/contrib/auto-render";
 
 export function useMath(rootEl) {
+
   if (!rootEl) return;
+
+  if (typeof renderMathInElement !== "function") return;
 
   renderMathInElement(rootEl, {
     delimiters: [
@@ -10,4 +12,5 @@ export function useMath(rootEl) {
     ],
     throwOnError: false
   });
+
 }
