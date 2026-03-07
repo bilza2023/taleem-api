@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Taleem Player</title>
+
+  <!-- App UI Styles (navbar, layout, etc) -->
+  <link rel="stylesheet" href="./css/app/app.css" />
+  <!-- Core Player Styles (required) -->
+  <link rel="stylesheet" href="./taleem-player-app.css" />
+  <!-- Theme (changeable) -->
+  <link rel="stylesheet" href="./css/themes/default.css" />
+  
+</head>
+
+<body>
+
+  <!-- Player Mount (DO NOT REMOVE) -->
+  <div id="app"></div>
+
+  <!-- UI Layer (Editable if needed, but keep IDs) -->
+  <div class="nav-test">
+    <button id="play-btn">▶</button>
+    <button id="pause-btn">⏸</button>
+    <button id="stop-btn">⏹</button>
+
+    <span id="time">0.0s</span>
+
+    <div class="scrub-wrap">
+      <input 
+        id="scrub"
+        type="range"
+        min="0"
+        max="1"
+        step="0.1"
+      />
+    </div>
+  </div>
+
+  <script type="module">
+    import {
+      createTaleemPlayer,
+      resolveAssetPaths,
+      resolveBackground,
+      getDeckEndTime,
+      createSilentTimer,
+      createAudioTimer,
+      startLoop
+    } from "./taleem-player-app.js";
+
+    async function init() {
+
+      /* ===============================
+         🔵 ENVIRONMENT CONFIG (EDIT ONLY THIS)
+      =============================== */
+
+      const CONTENT_BASE = "./assets";  
+      const deckUrl = `${CONTENT_BASE}/decks/demo.json`;
+      const audioUrl = `${CONTENT_BASE}/audio/music.mp3`;
+      const useAudio = true; // true = audio timer, false = silent timer
+
+      /* =============================== */
+
+      const res = await fetch(deckUrl);
+      if (!res.ok) {
+        document.body.innerHTML = "<h2>Deck not found</h2>";
+        throw new Error("Deck not found");
+      }
+
+      const deck = await res.json();
+
+      // Fix image paths
+      resolveAssetPaths(deck, `${CONTENT_BASE}/images/`);
+      resolveBackground(deck, `${CONTENT_BASE}/images/`);
+
+      // Select timer
+      const timer = useAudio
+        ? createAudioTimer(audioUrl)
+        : createSilentTimer();
+
+      // Create player
+      const player = createTaleemPlayer({
+        mount: "#app",
+        deck
+      });
+
+      const duration = getDeckEndTime(deck);
+
+      // Start playback loop
+      startLoop({
+        player,
+        timer,
+        duration,
+        ui: {
+          playBtn: document.getElementById("play-btn"),
+          pauseBtn: document.getElementById("pause-btn"),
+          stopBtn: document.getElementById("stop-btn"),
+          scrub: document.getElementById("scrub"),
+          timeEl: document.getElementById("time")
+        }
+      });
+    }
+
+    init();
+  </script>
+
+</body>
+</html>

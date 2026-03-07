@@ -1,13 +1,24 @@
+
 import {
   createTaleemPlayer,
   resolveAssetPaths,
   resolveBackground,
-  getDeckEndTime,
-  createAudioTimer,
-  createSilentTimer,
-  startLoop
-} from "/player/taleem-player-app.js";
+  getDeckEndTime
+} from "/js/taleem-player.esm.js";
 
+let player;
+let duration = 0;
+
+let playing = false;
+let startTime = 0;
+let currentTime = 0;
+
+let audio = null;
+
+
+/* --------------------------
+   SYLLABUS
+-------------------------- */
 
 function renderSyllabus(links){
 
@@ -43,6 +54,11 @@ function renderSyllabus(links){
 
 }
 
+
+
+/* --------------------------
+   DISCUSSION
+-------------------------- */
 
 function renderDiscussion(discussion){
 
@@ -93,6 +109,7 @@ function renderDiscussion(discussion){
 }
 
 
+
 function enableDiscussionAccordion(){
 
   const questions = document.querySelectorAll(".discussion-question");
@@ -111,6 +128,7 @@ function enableDiscussionAccordion(){
   });
 
 }
+
 
 
 function enableDiscussionSearch(){
@@ -134,13 +152,118 @@ function enableDiscussionSearch(){
 
 }
 
+
+
+/* --------------------------
+   PLAYER LOOP
+-------------------------- */
+
+function loop(){
+
+  if(playing){
+
+    if(audio){
+      currentTime = audio.currentTime;
+    }else{
+      currentTime = (performance.now() - startTime) / 1000;
+    }
+
+    if(currentTime > duration){
+      playing = false;
+      currentTime = duration;
+    }
+
+    player.renderAt(currentTime);
+
+    const scrub = document.getElementById("scrub");
+    const timeEl = document.getElementById("time");
+
+    if(scrub) scrub.value = currentTime;
+    if(timeEl) timeEl.textContent = currentTime.toFixed(1) + "s";
+
+  }
+
+  requestAnimationFrame(loop);
+
+}
+
+
+
+/* --------------------------
+   NAVBAR CONTROLS
+-------------------------- */
+
+function wireControls(){
+
+  const playBtn = document.getElementById("play-btn");
+  const pauseBtn = document.getElementById("pause-btn");
+  const stopBtn = document.getElementById("stop-btn");
+  const scrub = document.getElementById("scrub");
+
+  playBtn.onclick = () => {
+
+    if(audio){
+      audio.play();
+    }else{
+      startTime = performance.now() - currentTime * 1000;
+    }
+
+    playing = true;
+
+  };
+
+  pauseBtn.onclick = () => {
+
+    playing = false;
+
+    if(audio){
+      audio.pause();
+    }
+
+  };
+
+  stopBtn.onclick = () => {
+
+    playing = false;
+    currentTime = 0;
+
+    if(audio){
+      audio.pause();
+      audio.currentTime = 0;
+    }
+
+    player.renderAt(0);
+
+  };
+
+  scrub.oninput = e => {
+
+    currentTime = Number(e.target.value);
+
+    if(audio){
+      audio.currentTime = currentTime;
+    }else{
+      startTime = performance.now() - currentTime * 1000;
+    }
+
+    player.renderAt(currentTime);
+
+  };
+
+}
+
+
+
+/* --------------------------
+   LOAD DECK
+-------------------------- */
+
 async function loadDeck(deckId){
 
   const res = await fetch(`/api/deck/${deckId}`);
   const presentation = await res.json();
 
   const discussion = presentation.discussion || [];
-  const deck = presentation.deck;
 
   renderDiscussion(discussion);
   enableDiscussionAccordion();
@@ -152,36 +275,29 @@ async function loadDeck(deckId){
   resolveAssetPaths(presentation, imageBase);
   resolveBackground(presentation, imageBase);
 
-  let timer;
-
-  if(deck.audio){
-    timer = createAudioTimer(`${audioBase}${deck.audio}`);
-  } else {
-    timer = createSilentTimer();
-  }
-
-  const player = createTaleemPlayer({
+  player = createTaleemPlayer({
     mount: "#app",
     deck: presentation
   });
 
-  const duration = getDeckEndTime(deck);
+  duration = getDeckEndTime(presentation);
 
-  startLoop({
-    player,
-    timer,
-    duration,
-    ui:{
-      playBtn: document.getElementById("play-btn"),
-      pauseBtn: document.getElementById("pause-btn"),
-      stopBtn: document.getElementById("stop-btn"),
-      scrub: document.getElementById("scrub"),
-      timeEl: document.getElementById("time")
-    }
-  });
+  if(presentation.audio){
+    audio = new Audio(`${audioBase}${presentation.audio}`);
+  }
+
+  const scrub = document.getElementById("scrub");
+  if(scrub) scrub.max = duration;
+
+  wireControls();
 
 }
 
+
+
+/* --------------------------
+   INIT
+-------------------------- */
 
 async function init(){
 
@@ -211,7 +327,30 @@ async function init(){
     sidebar.classList.toggle("closed");
   };
 
+
+  /* --------------------------
+     ANSWER PANEL (ORIGINAL)
+  -------------------------- */
+
+  const answersView = document.getElementById("answers-view");
+  const playerView = document.getElementById("player-view");
+
+  const backBtn = document.getElementById("back-to-player");
+
+  if(backBtn){
+    backBtn.onclick = () => {
+      answersView.style.display = "none";
+      playerView.style.display = "block";
+    };
+  }
+
 }
 
 
+
+/* --------------------------
+   START
+-------------------------- */
+
 init();
+loop();
