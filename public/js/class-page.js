@@ -134,5 +134,43 @@ async function init(){
 /* --------------------------
    START
 -------------------------- */
+/* --------------------------
+   THEMES
+-------------------------- */
+
+function setTheme(bg, text){
+
+  document.documentElement.style.setProperty("--backgroundColor", bg);
+  document.documentElement.style.setProperty("--primaryColor", text);
+
+  localStorage.setItem("taleem-bg", bg);
+  localStorage.setItem("taleem-text", text);
+}
+
+const grayBtn = document.getElementById("theme-gray");
+const blueBtn = document.getElementById("theme-blue");
+const creamBtn = document.getElementById("theme-cream");
+
+if(grayBtn){
+  grayBtn.onclick = () => setTheme("#1f2933", "#e5e7eb");
+}
+
+
+if(creamBtn){
+  creamBtn.onclick = () => setTheme("#fffaf0", "#3a2f1f");
+}
+
+if(blueBtn){
+  blueBtn.onclick = () => setTheme("#798ded", "#010518");
+}
+/* restore saved theme */
+
+const savedBg = localStorage.getItem("taleem-bg");
+const savedText = localStorage.getItem("taleem-text");
+
+if(savedBg && savedText){
+  document.documentElement.style.setProperty("--backgroundColor", savedBg);
+  document.documentElement.style.setProperty("--primaryColor", savedText);
+}
 
 init();

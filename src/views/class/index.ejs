@@ -26,6 +26,11 @@ src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js">
     --primaryColor: #010518;
   }
   
+  body{
+  background:var(--backgroundColor);
+  color:var(--primaryColor);
+  transition:background 0.25s ease, color 0.25s ease;
+}
   /* allow the page to scroll vertically */
 html, body {
   height: 100%;

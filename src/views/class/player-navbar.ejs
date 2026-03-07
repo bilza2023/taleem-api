@@ -1,10 +1,151 @@
+<style>
+  .brand-btn{
+  display:inline-block;
+  padding:6px 14px;
+  margin-right:12px;
+
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:0.5px;
+
+  color:white;
+  text-decoration:none;
+
+  background:linear-gradient(135deg,#2bb673,#21372c);
+  border-radius:6px;
+
+  box-shadow:0 2px 4px rgba(0,0,0,0.15);
+  transition:all 0.15s ease;
+}
+
+.brand-btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 4px 8px rgba(0,0,0,0.2);
+}
+#time{
+  display:inline-block;
+  margin-left:12px;
+  padding:4px 10px;
+
+  font-size:13px;
+  font-weight:500;
+  letter-spacing:0.3px;
+
+  color:#4b5563;
+  background:#f3f4f6;
+
+  border:1px solid #e5e7eb;
+  border-radius:6px;
+
+  box-shadow:inset 0 1px 2px rgba(0,0,0,0.06);
+
+  font-variant-numeric:tabular-nums;
+}
+.ctl-btn{
+  padding:6px 10px;
+  margin-right:6px;
+
+  font-size:14px;
+  line-height:1;
+
+  color:#374151;
+  background:#ffffff;
+
+  border:1px solid #e5e7eb;
+  border-radius:6px;
+
+  cursor:pointer;
+
+  box-shadow:0 1px 2px rgba(0,0,0,0.08);
+  transition:all 0.12s ease;
+}
+
+.ctl-btn:hover{
+  background:#f9fafb;
+  border-color:#d1d5db;
+}
+
+.ctl-btn:active{
+  transform:translateY(1px);
+  box-shadow:inset 0 1px 2px rgba(0,0,0,0.15);
+}
+#toggle-sidebar{
+  padding:6px 10px;
+
+  font-size:16px;
+  line-height:1;
+
+  color:#374151;
+  background:#ffffff;
+
+  border:1px solid #e5e7eb;
+  border-radius:6px;
+
+  cursor:pointer;
+
+  box-shadow:0 1px 2px rgba(0,0,0,0.08);
+  transition:all 0.12s ease;
+}
+
+#toggle-sidebar:hover{
+  background:#f9fafb;
+  border-color:#b5c078;
+}
+
+#toggle-sidebar:active{
+  transform:translateY(1px);
+  box-shadow:inset 0 1px 2px rgba(0,0,0,0.15);
+}
+/* ---------- THEME DOTS ---------- */
+
+.theme-picker{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-right:12px;
+}
+
+.theme-dot{
+  width:14px;
+  height:14px;
+
+  border-radius:50%;
+  border:1px solid rgba(0,0,0,0.15);
+
+  cursor:pointer;
+
+  transition:transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.theme-dot:hover{
+  transform:scale(1.15);
+  box-shadow:0 0 0 2px rgba(0,0,0,0.08);
+}
+
+/* individual theme colors */
+
+#theme-gray{
+  background:#d1d5db;
+}
+
+#theme-blue{
+  background:#93c5fd;
+}
+
+#theme-cream{
+  background:#f3e8d5;
+}
+</style>
+
 <div class="navbar">
 
     <div class="left-controls">
-  
-      <button id="play-btn">▶</button>
-      <button id="pause-btn">⏸</button>
-      <button id="stop-btn">⏹</button>
+      
+      <a href="/" class="brand-btn">taleem.help</a>
+
+      <button class="ctl-btn" id="play-btn">▶</button>
+      <button class="ctl-btn" id="pause-btn">⏸</button>
+      <button class="ctl-btn" id="stop-btn">⏹</button>
   
       <span id="time">0.0s</span>
   
@@ -15,10 +156,14 @@
     </div>
   
     <div class="right-controls">
-  
-      <a href="/">←</a>
-  
-      <button id="toggle-sidebar">▥</button>
+      <div class="theme-picker">
+
+        <div class="theme-dot" id="theme-gray" title="Gray theme"></div>
+        <div class="theme-dot" id="theme-cream" title="Cream theme"></div>
+        <div class="theme-dot" id="theme-blue" title="Blue theme"></div>
+      
+      </div>
+      <button id="toggle-sidebar">☷</button>
   
     </div>
   
