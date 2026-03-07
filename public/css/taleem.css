@@ -2,26 +2,6 @@
 /* =====================================================
    TALEEM — Single Public Stylesheet
 
-  /* -------------------------------
-     Global Page Reset
-     ------------------------------- */
-  
-     html,body {
-        height: 100%;
-         overflow: hidden;
-        margin: 0;
-        font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-        background: var(--backgroundColor, #0b1220);
-        color: var(--primaryColor, #e6e9ff);
-      }
-      
-      #app {
-        position: relative;
-        width: 100vw;
-        min-height: 100vh;
-        overflow: hidden;
-      }
-      
       /* -------------------------------
          Browser / Player Layers
          ------------------------------- */
