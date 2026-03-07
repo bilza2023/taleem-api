@@ -134,7 +134,6 @@ function enableDiscussionSearch(){
 
 }
 
-
 async function loadDeck(deckId){
 
   const res = await fetch(`/api/deck/${deckId}`);
