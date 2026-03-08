@@ -62,3 +62,19 @@ model Question {
 
   student      Student  @relation(fields: [studentId], references: [id])
 }
+
+model Article {
+  id          String   @id @default(cuid())
+
+  slug        String   @unique
+  title       String
+
+  contentHtml String   
+
+  tags        String?  // comma separated: "algebra,formula,revision"
+
+  published   Boolean  @default(false)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

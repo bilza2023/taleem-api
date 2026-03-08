@@ -7,6 +7,7 @@ const apiRoutes = require('./routes/api.routes');
 const syllabusRoutes = require('./routes/syllabus.routes');   // ← add this
 const classRoutes = require('./routes/class.routes');   // ← add this
 const authRoutes = require('./routes/auth.routes');
+const articlesRoutes = require('./routes/articles.routes');
 
 const PORT = process.env.PORT || 9000;
 
@@ -29,6 +30,7 @@ app.use('/api', apiRoutes);
 app.use('/syllabus', syllabusRoutes);   // ← add this
 app.use('/class', classRoutes);   // ← add this
 app.use('/', authRoutes);
+app.use('/', articlesRoutes);
 
 app.listen(PORT, () => {
 console.log(`🚀 Server running on http://localhost:${PORT}`);

@@ -175,5 +175,49 @@ router.post('/questions', async (req, res) => {
 
 });
 
+// --------------------
+// CREATE ARTICLE
+// --------------------
+
+router.post('/articles', async (req, res) => {
+
+  try {
+
+    const { slug, title, tags, contentHtml } = req.body;
+
+    if (!slug || !title || !contentHtml) {
+      return res.status(400).json({ error: "missing fields" });
+    }
+
+    const existing = await prisma.article.findUnique({
+      where: { slug }
+    });
+
+    if (existing) {
+      return res.status(400).json({ error: "slug already exists" });
+    }
+
+    const article = await prisma.article.create({
+      data: {
+        slug,
+        title,
+        tags,
+        contentHtml,
+        published: true
+      }
+    });
+
+    res.json({
+      success: true,
+      articleId: article.id
+    });
+
+  } catch (err) {
+
+    res.status(500).json({ error: "article save failed" });
+
+  }
+
+});
 
 module.exports = router;

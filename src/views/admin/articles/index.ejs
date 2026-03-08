@@ -1,0 +1,154 @@
+<%- include("../../partials/head",{title:"Admin Articles"}) %>
+<%- include("../../partials/main-nav") %>
+
+<style>
+
+.hero{
+  background:linear-gradient(135deg,#1c6fb8,#0f4f8a);
+  color:white;
+  text-align:center;
+  padding:50px 20px;
+  margin-bottom:30px;
+}
+
+.hero h1{
+  margin:0;
+  font-size:34px;
+}
+
+.formBox{
+  max-width:900px;
+  margin:auto;
+  background:white;
+  padding:30px;
+  border-radius:10px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.12);
+}
+
+.formGroup{
+  margin-bottom:16px;
+}
+
+label{
+  display:block;
+  font-size:14px;
+  margin-bottom:6px;
+}
+
+input{
+  width:100%;
+  padding:10px;
+  border:1px solid #ccc;
+  border-radius:6px;
+}
+
+textarea{
+  width:100%;
+  height:320px;
+  padding:10px;
+  border:1px solid #ccc;
+  border-radius:6px;
+  font-family:monospace;
+  font-size:13px;
+}
+
+.btn{
+  margin-top:10px;
+  padding:12px 18px;
+  background:#1c6fb8;
+  border:none;
+  color:white;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.btn:hover{
+  background:#0f4f8a;
+}
+
+.message{
+  margin-top:10px;
+  font-size:14px;
+}
+
+</style>
+
+
+<header class="hero">
+<h1>Article Editor</h1>
+</header>
+
+<div class="wrapper">
+
+<div class="formBox">
+
+<form id="articleForm">
+
+<div class="formGroup">
+<label>Slug</label>
+<input type="text" name="slug" placeholder="simple-interest">
+</div>
+
+<div class="formGroup">
+<label>Title</label>
+<input type="text" name="title">
+</div>
+
+<div class="formGroup">
+<label>Tags</label>
+<input type="text" name="tags" placeholder="algebra,revision,formula">
+</div>
+
+<div class="formGroup">
+<label>HTML Content</label>
+<textarea name="contentHtml"></textarea>
+</div>
+
+<button class="btn">Save Article</button>
+
+</form>
+
+<div id="msg" class="message"></div>
+
+</div>
+
+</div>
+
+
+<script>
+
+const form = document.getElementById("articleForm")
+const msg = document.getElementById("msg")
+
+form.addEventListener("submit", async (e)=>{
+
+  e.preventDefault()
+
+  const data = {
+    slug: form.slug.value,
+    title: form.title.value,
+    tags: form.tags.value,
+    contentHtml: form.contentHtml.value
+  }
+
+  const res = await fetch("/api/articles",{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify(data)
+  })
+
+  const json = await res.json()
+
+  if(json.success){
+    msg.innerHTML = "Article saved."
+    form.reset()
+  }else{
+    msg.innerHTML = json.error || "Save failed"
+  }
+
+})
+
+</script>
+
+
+<%- include("../../partials/footer") %>
