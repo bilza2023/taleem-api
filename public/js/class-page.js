@@ -18,7 +18,15 @@ async function loadDeck(deckId){
   const res = await fetch(`/api/deck/${deckId}`);
   const presentation = await res.json();
 
-  const discussion = presentation.discussion || [];
+/* --------------------------
+   DISCUSSION (DB)
+-------------------------- */
+
+const discRes = await fetch(`/api/discussion/deck/${deckId}`);
+const discData = await discRes.json();
+
+const discussion = discData.discussion || [];
+console.log("discussion",discussion);
 
   renderDiscussion(discussion);
   enableDiscussionAccordion();
