@@ -7,7 +7,7 @@ const apiRoutes = require('./routes/api.routes');
 const syllabusRoutes = require('./routes/syllabus.routes');   // ← add this
 const classRoutes = require('./routes/class.routes');   // ← add this
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 9000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
