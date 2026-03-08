@@ -1,4 +1,5 @@
-<%- include("../partials/head",{title:"Ask Question"}) %>
+<%- include("../partials/head",{title:"Register"}) %>
+
 <%- include("../partials/main-nav") %>
 
 <style>
@@ -18,7 +19,7 @@
 }
 
 .formBox{
-  max-width:600px;
+  max-width:420px;
   margin:auto;
   background:white;
   padding:30px;
@@ -26,9 +27,18 @@
   box-shadow:0 10px 25px rgba(0,0,0,0.12);
 }
 
-textarea{
+.formGroup{
+  margin-bottom:16px;
+}
+
+.formGroup label{
+  display:block;
+  font-size:14px;
+  margin-bottom:6px;
+}
+
+.formGroup input{
   width:100%;
-  height:140px;
   padding:10px;
   border:1px solid #ccc;
   border-radius:6px;
@@ -36,11 +46,12 @@ textarea{
 }
 
 .btn{
-  margin-top:12px;
-  padding:12px 18px;
+  width:100%;
+  padding:12px;
   background:#1c6fb8;
-  color:white;
   border:none;
+  color:white;
+  font-size:15px;
   border-radius:6px;
   cursor:pointer;
 }
@@ -50,27 +61,43 @@ textarea{
 }
 
 .message{
-  margin-top:12px;
+  margin-top:14px;
   font-size:14px;
+  text-align:center;
 }
 
 </style>
 
+
+
 <header class="hero">
-<h1>Ask a Question</h1>
+<h1>Create Account</h1>
 </header>
+
+
 
 <div class="wrapper">
 
 <div class="formBox">
 
-<p><strong>Lesson:</strong> <%= lesson %></p>
+<form id="registerForm">
 
-<form id="askForm">
+<div class="formGroup">
+<label>Email</label>
+<input type="email" name="email" required>
+</div>
 
-<textarea name="questionText" placeholder="Write your question here..." required></textarea>
+<div class="formGroup">
+<label>Display Name</label>
+<input type="text" name="displayName" required>
+</div>
 
-<button class="btn">Submit Question</button>
+<div class="formGroup">
+<label>Password</label>
+<input type="password" name="password" required>
+</div>
+
+<button class="btn">Register</button>
 
 </form>
 
@@ -81,43 +108,41 @@ textarea{
 </div>
 
 
+
 <script>
 
-const form = document.getElementById("askForm")
+const form = document.getElementById("registerForm")
 const msg = document.getElementById("msg")
 
 form.addEventListener("submit", async (e)=>{
 
   e.preventDefault()
 
-  const studentId = localStorage.getItem("studentId")
-
-  if(!studentId){
-    msg.innerHTML = "Please login first."
-    return
+  const data = {
+    email: form.email.value,
+    displayName: form.displayName.value,
+    password: form.password.value
   }
 
-  const res = await fetch("/api/questions",{
+  const res = await fetch("/api/register",{
     method:"POST",
     headers:{ "Content-Type":"application/json" },
-    body: JSON.stringify({
-      studentId,
-      lessonSlug: "<%= lesson %>",
-      questionText: form.questionText.value
-    })
+    body: JSON.stringify(data)
   })
 
   const json = await res.json()
 
   if(json.success){
-    msg.innerHTML = "Question submitted successfully."
+    msg.innerHTML = "Account created. You can now login."
     form.reset()
   }else{
-    msg.innerHTML = json.error || "Submission failed"
+    msg.innerHTML = json.error || "Registration failed"
   }
 
 })
 
 </script>
+
+
 
 <%- include("../partials/footer") %>

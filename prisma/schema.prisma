@@ -8,28 +8,28 @@ datasource db {
 }
 
 model Student {
-  id              String   @id @default(cuid())
+  id            String   @id @default(cuid())
 
-  email           String   @unique
-  passwordHash    String
+  email         String   @unique
+  passwordHash  String
 
-  displayName     String
-  icon            String   @default("default.png")
+  displayName   String
+  icon          String   @default("default.png")
 
-  isActive        Boolean  @default(true)
+  isActive      Boolean  @default(true)
 
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  feedbacks       Feedback[]
-  subscriptions   Subscription[]
+  subscriptions Subscription[]
+  questions     Question[]
 }
 
 model Subscription {
   id          String   @id @default(cuid())
 
   studentId   String
-  classId     String
+  classSlug   String
 
   status      String   @default("active")
 
@@ -41,37 +41,24 @@ model Subscription {
 
   student     Student  @relation(fields: [studentId], references: [id])
 
-  @@unique([studentId, classId])
+  @@unique([studentId, classSlug])
 }
 
-model Deck {
-  id        Int      @id @default(autoincrement())
-  slug      String   @unique
-  title     String
-  deckJson  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+model Question {
+  id           String   @id @default(cuid())
 
-model Feedback {
-  id              String   @id @default(cuid())
+  studentId    String
+  lessonSlug   String
 
-  studentId       String
-  deckId          String?
-  chapterId       String?
-  classId         String?
+  questionText String
+  answerText   String?
+  links        String?
 
-  type            String
-  visibility      String   @default("private")
-  status          String   @default("received")
+  status       String   @default("new")
+  published    Boolean  @default(false)
 
-  message         String
-  teacherReply    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
-  promoted        Boolean  @default(false)
-
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-
-  student         Student  @relation(fields: [studentId], references: [id])
+  student      Student  @relation(fields: [studentId], references: [id])
 }
