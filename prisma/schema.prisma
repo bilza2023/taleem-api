@@ -43,12 +43,13 @@ model Subscription {
 
   @@unique([studentId, classSlug])
 }
-
 model Question {
   id           String   @id @default(cuid())
 
   studentId    String
-  lessonSlug   String
+
+  contentSlug  String?
+  contentType  String?   // deck | article
 
   questionText String
   answerText   String?

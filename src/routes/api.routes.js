@@ -220,4 +220,70 @@ router.post('/articles', async (req, res) => {
 
 });
 
+// --------------------
+// GET STUDENT QUESTIONS
+// --------------------
+
+router.get('/questions/student/:studentId', async (req, res) => {
+
+  try {
+
+    const studentId = req.params.studentId;
+
+    const questions = await prisma.question.findMany({
+      where: { studentId },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    res.json({
+      success: true,
+      questions
+    });
+
+  } catch (err) {
+
+    res.status(500).json({ error: "failed to fetch questions" });
+
+  }
+
+});
+
+// --------------------
+// GET DISCUSSION
+// --------------------
+
+router.get('/discussion/:type/:slug', async (req, res) => {
+
+  try {
+
+    const { type, slug } = req.params;
+
+    const questions = await prisma.question.findMany({
+      where: {
+        contentType: type,
+        contentSlug: slug,
+        published: true
+      },
+      orderBy: {
+        createdAt: 'desc'
+      },
+      select: {
+        questionText: true,
+        answerText: true,
+        links: true
+      }
+    });
+
+    res.json({
+      success: true,
+      discussion: questions
+    });
+
+  } catch (err) {
+
+    res.status(500).json({ error: "discussion fetch failed" });
+
+  }
+
+});
 module.exports = router;
