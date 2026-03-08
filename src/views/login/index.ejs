@@ -97,40 +97,42 @@
 
 </div>
 
+
 <script>
 
-const form = document.getElementById("loginForm")
-const msg = document.getElementById("msg")
-
-form.addEventListener("submit", async (e)=>{
-
-  e.preventDefault()
-
-  const res = await fetch("/api/login",{
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body: JSON.stringify({
-      email: form.email.value,
-      password: form.password.value
+  const form = document.getElementById("loginForm")
+  const msg = document.getElementById("msg")
+  
+  form.addEventListener("submit", async (e)=>{
+  
+    e.preventDefault()
+  
+    const res = await fetch("/api/login",{
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({
+        email: form.email.value,
+        password: form.password.value
+      })
     })
+  
+    const json = await res.json()
+  
+    if(json.success){
+  
+      localStorage.setItem("token", json.token)
+      localStorage.setItem("studentId", json.studentId)
+      localStorage.setItem("displayName", json.displayName)
+  
+      window.location = "/"
+  
+    }else{
+  
+      msg.innerHTML = json.error || "Login failed"
+  
+    }
+  
   })
-
-  const json = await res.json()
-
-  if(json.success){
-
-    localStorage.setItem("studentId", json.studentId)
-
-    msg.innerHTML = "Login successful"
-
-  }else{
-
-    msg.innerHTML = json.error || "Login failed"
-
-  }
-
-})
-
-</script>
-
+  
+  </script>
 <%- include("../partials/footer") %>

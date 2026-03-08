@@ -1,69 +1,56 @@
-<header class="main-nav">
 
-    <div class="nav-inner">
-    
-    <a class="logo" href="/">
-    Taleem.Help
-    </a>
-    
-    <nav class="nav-links">
-    
-    <a href="/">Home</a>
-    <a href="/syllabus?course=fbise8math">Grade 8</a>
-    <a href="/syllabus?course=fbise9math">Grade 9</a>
-    <a href="/video-blog">Videos</a>
-    <a href="/ask">Ask</a>
-    <a href="/about">About</a>
-    
-    </nav>
-    
-    </div>
-    
-    </header>
-    
-    <style>
-    
-    .main-nav{
-      background:rgb(1, 8, 45);
-      /* border-bottom:1px solid #ddd; */
+<header style="background:#01082d;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">
+
+  <a href="/" style="color:#fff;font-weight:bold;font-size:18px;text-decoration:none;">
+  Taleem.Help
+  </a>
+  
+  <div id="nav-auth" style="color:#fff;font-size:14px;"></div>
+  
+  </header>
+  
+  <script>
+  
+  function parseJwt(token){
+    try{
+      return JSON.parse(atob(token.split('.')[1]))
+    }catch(e){
+      return null
     }
-    
-    .nav-inner{
-      max-width:1100px;
-      margin:auto;
-      padding:14px 20px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
+  }
+  
+  const nav = document.getElementById("nav-auth")
+  const token = localStorage.getItem("token")
+  
+  if(!token){
+  
+    nav.innerHTML = `
+      <a href="/register" style="color:white;">Register</a>
+      &nbsp;|&nbsp;
+      <a href="/login" style="color:white;">Login</a>
+    `
+  
+  }else{
+  
+    const payload = parseJwt(token)
+    const name = payload?.displayName || "User"
+  
+    nav.innerHTML = `
+      <span>${name}</span>
+      &nbsp;|&nbsp;
+      <a href="#" id="logoutBtn" style="color:white;">Logout</a>
+    `
+  
+    document.getElementById("logoutBtn").onclick = (e)=>{
+      e.preventDefault()
+  
+      localStorage.removeItem("token")
+      localStorage.removeItem("studentId")
+      localStorage.removeItem("displayName")
+  
+      location.reload()
     }
-    
-    .logo{
-      font-weight:bold;
-      font-size:18px;
-      color:var(--primary);
-    }
-    
-    .nav-links{
-      display:flex;
-      gap:22px;
-    }
-    
-    .nav-links a{
-      color:var(--text-soft);
-      font-size:14px;
-    }
-    
-    .nav-links a:hover{
-      color:var(--primary);
-    }
-    
-    @media (max-width:700px){
-    
-    .nav-links{
-      gap:14px;
-      font-size:13px;
-    }
-    
-    }
-    
-    </style>
+  
+  }
+  
+  </script>

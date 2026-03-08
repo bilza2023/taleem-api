@@ -4,6 +4,8 @@ const path = require('path');
 const fs = require('fs');
 const bcrypt = require('bcryptjs');
 const { PrismaClient } = require('@prisma/client');
+const jwt = require('jsonwebtoken');
+const JWT_SECRET = "taleem-secret-key";
 
 const prisma = new PrismaClient();
 
@@ -65,6 +67,10 @@ router.get('/deck/:vid', (req, res) => {
 // REGISTER
 // --------------------
 
+// --------------------
+// REGISTER
+// --------------------
+
 router.post('/register', async (req, res) => {
 
   try {
@@ -93,17 +99,33 @@ router.post('/register', async (req, res) => {
       }
     });
 
+    const token = jwt.sign(
+      {
+        studentId: student.id,
+        displayName: student.displayName
+      },
+      JWT_SECRET,
+      { expiresIn: "30d" }
+    );
+
     res.json({
       success: true,
-      studentId: student.id
+      token,
+      studentId: student.id,
+      displayName: student.displayName
     });
 
   } catch (err) {
+
     res.status(500).json({ error: "register failed" });
+
   }
 
 });
 
+// --------------------
+// LOGIN
+// --------------------
 
 // --------------------
 // LOGIN
@@ -114,6 +136,10 @@ router.post('/login', async (req, res) => {
   try {
 
     const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ error: "missing fields" });
+    }
 
     const student = await prisma.student.findUnique({
       where: { email }
@@ -129,14 +155,26 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: "invalid credentials" });
     }
 
+    const token = jwt.sign(
+      {
+        studentId: student.id,
+        displayName: student.displayName
+      },
+      JWT_SECRET,
+      { expiresIn: "30d" }
+    );
+
     res.json({
       success: true,
+      token,
       studentId: student.id,
       displayName: student.displayName
     });
 
   } catch (err) {
+
     res.status(500).json({ error: "login failed" });
+
   }
 
 });

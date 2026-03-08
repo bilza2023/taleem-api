@@ -1,80 +1,9 @@
 <%- include("../partials/head",{title:"Register"}) %>
-
 <%- include("../partials/main-nav") %>
-
-<style>
-
-.hero{
-  background:linear-gradient(135deg,#1c6fb8,#0f4f8a);
-  color:white;
-  text-align:center;
-  padding:55px 20px 60px 20px;
-  margin-bottom:35px;
-  box-shadow:0 6px 20px rgba(0,0,0,0.15);
-}
-
-.hero h1{
-  margin:0;
-  font-size:36px;
-}
-
-.formBox{
-  max-width:420px;
-  margin:auto;
-  background:white;
-  padding:30px;
-  border-radius:10px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.12);
-}
-
-.formGroup{
-  margin-bottom:16px;
-}
-
-.formGroup label{
-  display:block;
-  font-size:14px;
-  margin-bottom:6px;
-}
-
-.formGroup input{
-  width:100%;
-  padding:10px;
-  border:1px solid #ccc;
-  border-radius:6px;
-  font-size:14px;
-}
-
-.btn{
-  width:100%;
-  padding:12px;
-  background:#1c6fb8;
-  border:none;
-  color:white;
-  font-size:15px;
-  border-radius:6px;
-  cursor:pointer;
-}
-
-.btn:hover{
-  background:#0f4f8a;
-}
-
-.message{
-  margin-top:14px;
-  font-size:14px;
-  text-align:center;
-}
-
-</style>
-
-
 
 <header class="hero">
 <h1>Create Account</h1>
 </header>
-
-
 
 <div class="wrapper">
 
@@ -83,13 +12,13 @@
 <form id="registerForm">
 
 <div class="formGroup">
-<label>Email</label>
-<input type="email" name="email" required>
+<label>Name</label>
+<input type="text" name="displayName" required>
 </div>
 
 <div class="formGroup">
-<label>Display Name</label>
-<input type="text" name="displayName" required>
+<label>Email</label>
+<input type="email" name="email" required>
 </div>
 
 <div class="formGroup">
@@ -107,8 +36,6 @@
 
 </div>
 
-
-
 <script>
 
 const form = document.getElementById("registerForm")
@@ -118,31 +45,34 @@ form.addEventListener("submit", async (e)=>{
 
   e.preventDefault()
 
-  const data = {
-    email: form.email.value,
-    displayName: form.displayName.value,
-    password: form.password.value
-  }
-
   const res = await fetch("/api/register",{
     method:"POST",
     headers:{ "Content-Type":"application/json" },
-    body: JSON.stringify(data)
+    body: JSON.stringify({
+      displayName: form.displayName.value,
+      email: form.email.value,
+      password: form.password.value
+    })
   })
 
   const json = await res.json()
 
   if(json.success){
-    msg.innerHTML = "Account created. You can now login."
-    form.reset()
+
+    localStorage.setItem("token", json.token)
+    localStorage.setItem("studentId", json.studentId)
+    localStorage.setItem("displayName", json.displayName)
+
+    window.location = "/"
+
   }else{
+
     msg.innerHTML = json.error || "Registration failed"
+
   }
 
 })
 
 </script>
-
-
 
 <%- include("../partials/footer") %>

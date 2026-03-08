@@ -17,6 +17,7 @@
     "ejs": "^4.0.1",
     "express": "^5.2.1",
     "howler": "^2.2.4",
+    "jsonwebtoken": "^9.0.3",
     "prisma": "^5.22.0",
     "taleem-player": "^1.0.17",
     "taleem-player-app": "^1.0.5"
