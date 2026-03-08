@@ -1,0 +1,69 @@
+<header class="main-nav">
+
+    <div class="nav-inner">
+    
+    <a class="logo" href="/">
+    Taleem.Help
+    </a>
+    
+    <nav class="nav-links">
+    
+    <a href="/">Home</a>
+    <a href="/syllabus?course=fbise8math">Grade 8</a>
+    <a href="/syllabus?course=fbise9math">Grade 9</a>
+    <a href="/video-blog">Videos</a>
+    <a href="/ask">Ask</a>
+    <a href="/about">About</a>
+    
+    </nav>
+    
+    </div>
+    
+    </header>
+    
+    <style>
+    
+    .main-nav{
+      background:rgb(1, 8, 45);
+      /* border-bottom:1px solid #ddd; */
+    }
+    
+    .nav-inner{
+      max-width:1100px;
+      margin:auto;
+      padding:14px 20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    
+    .logo{
+      font-weight:bold;
+      font-size:18px;
+      color:var(--primary);
+    }
+    
+    .nav-links{
+      display:flex;
+      gap:22px;
+    }
+    
+    .nav-links a{
+      color:var(--text-soft);
+      font-size:14px;
+    }
+    
+    .nav-links a:hover{
+      color:var(--primary);
+    }
+    
+    @media (max-width:700px){
+    
+    .nav-links{
+      gap:14px;
+      font-size:13px;
+    }
+    
+    }
+    
+    </style>

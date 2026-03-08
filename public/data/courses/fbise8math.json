@@ -1,68 +1,112 @@
-
 {
-    "slug": "fbise8math",
-    "title": "FBISE Grade 8 Mathematics",
-  
-    "chapters": [
-      {
-        "slug": "fbise8math-ch1",
-        "title": "Rational Numbers"
-      },
-      {
-        "slug": "fbise8math-ch2",
-        "title": "Linear Equations in One Variable"
-      },
-      {
-        "slug": "fbise8math-ch3",
-        "title": "Squares and Square Roots"
-      },
-      {
-        "slug": "fbise8math-ch4",
-        "title": "Cube and Cube Roots"
-      },
-      {
-        "slug": "fbise8math-ch5",
-        "title": "Sets"
-      },
-      {
-        "slug": "fbise8math-ch6",
-        "title": "Ratio and Proportion"
-      },
-      {
-        "slug": "fbise8math-ch7",
-        "title": "Percentage"
-      },
-      {
-        "slug": "fbise8math-ch8",
-        "title": "Profit and Loss"
-      },
-      {
-        "slug": "fbise8math-ch9",
-        "title": "Simple Interest"
-      },
-      {
-        "slug": "fbise8math-ch10",
-        "title": "Algebraic Expressions and Identities"
-      },
-      {
-        "slug": "fbise8math-ch11",
-        "title": "Direct and Inverse Variation"
-      },
-      {
-        "slug": "fbise8math-ch12",
-        "title": "Introduction to Graphs"
-      },
-      {
-        "slug": "fbise8math-ch13",
-        "title": "Perimeter and Area"
-      },
-      {
-        "slug": "fbise8math-ch14",
-        "title": "Volume and Surface Area of Solids"
-      },
-      {
-        "slug": "fbise8math-ch15",
-        "title": "Data Handling"
-      }
-    ]
-  }
+  "slug": "fbise8math",
+  "title": "FBISE Grade 8 Mathematics",
+
+  "chapters": [
+    {
+      "slug": "fbise8math-ch1",
+      "title": "Rational Numbers",
+      "image": "box.webp",
+      "details": "Learn fractions, integers and operations on rational numbers.",
+      "lessons": 12
+    },
+    {
+      "slug": "fbise8math-ch2",
+      "title": "Linear Equations in One Variable",
+      "image": "box.webp",
+      "details": "Understand algebraic equations and how to solve them step by step.",
+      "lessons": 10
+    },
+    {
+      "slug": "fbise8math-ch3",
+      "title": "Squares and Square Roots",
+      "image": "box.webp",
+      "details": "Explore squares, square roots and their applications.",
+      "lessons": 9
+    },
+    {
+      "slug": "fbise8math-ch4",
+      "title": "Cube and Cube Roots",
+      "image": "box.webp",
+      "details": "Understand cubes, cube roots and their properties.",
+      "lessons": 8
+    },
+    {
+      "slug": "fbise8math-ch5",
+      "title": "Sets",
+      "image": "box.webp",
+      "details": "Learn the basics of sets, notation and set operations.",
+      "lessons": 7
+    },
+    {
+      "slug": "fbise8math-ch6",
+      "title": "Ratio and Proportion",
+      "image": "box.webp",
+      "details": "Study ratios, proportions and real-life comparisons.",
+      "lessons": 9
+    },
+    {
+      "slug": "fbise8math-ch7",
+      "title": "Percentage",
+      "image": "box.webp",
+      "details": "Understand percentages and their everyday applications.",
+      "lessons": 8
+    },
+    {
+      "slug": "fbise8math-ch8",
+      "title": "Profit and Loss",
+      "image": "box.webp",
+      "details": "Learn calculations related to business profit and loss.",
+      "lessons": 8
+    },
+    {
+      "slug": "fbise8math-ch9",
+      "title": "Simple Interest",
+      "image": "box.webp",
+      "details": "Understand the concept of interest and financial calculations.",
+      "lessons": 7
+    },
+    {
+      "slug": "fbise8math-ch10",
+      "title": "Algebraic Expressions and Identities",
+      "image": "box.webp",
+      "details": "Work with algebraic expressions and important identities.",
+      "lessons": 11
+    },
+    {
+      "slug": "fbise8math-ch11",
+      "title": "Direct and Inverse Variation",
+      "image": "box.webp",
+      "details": "Study relationships between quantities and variation.",
+      "lessons": 7
+    },
+    {
+      "slug": "fbise8math-ch12",
+      "title": "Introduction to Graphs",
+      "image": "box.webp",
+      "details": "Learn how mathematical relationships are shown using graphs.",
+      "lessons": 6
+    },
+    {
+      "slug": "fbise8math-ch13",
+      "title": "Perimeter and Area",
+      "image": "box.webp",
+      "details": "Calculate perimeter and area of common geometric shapes.",
+      "lessons": 9
+    },
+    {
+      "slug": "fbise8math-ch14",
+      "title": "Volume and Surface Area of Solids",
+      "image": "box.webp",
+      "details": "Understand volume and surface area of three-dimensional shapes.",
+      "lessons": 8
+    },
+    {
+      "slug": "fbise8math-ch15",
+      "title": "Data Handling",
+      "image": "box.webp",
+      "details": "Collect, organize and interpret data using charts and graphs.",
+      "lessons": 7
+    }
+  ]
+}
