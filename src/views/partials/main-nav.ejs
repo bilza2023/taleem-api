@@ -1,56 +1,25 @@
-
 <header style="background:#01082d;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">
 
   <a href="/" style="color:#fff;font-weight:bold;font-size:18px;text-decoration:none;">
-  Taleem.Help
+    Taleem.Help
   </a>
-  
-  <div id="nav-auth" style="color:#fff;font-size:14px;"></div>
-  
-  </header>
-  
-  <script>
-  
-  function parseJwt(token){
-    try{
-      return JSON.parse(atob(token.split('.')[1]))
-    }catch(e){
-      return null
-    }
-  }
-  
-  const nav = document.getElementById("nav-auth")
-  const token = localStorage.getItem("token")
-  
-  if(!token){
-  
-    nav.innerHTML = `
-      <a href="/register" style="color:white;">Register</a>
-      &nbsp;|&nbsp;
-      <a href="/login" style="color:white;">Login</a>
-    `
-  
-  }else{
-  
-    const payload = parseJwt(token)
-    const name = payload?.displayName || "User"
-  
-    nav.innerHTML = `
-      <span>${name}</span>
-      &nbsp;|&nbsp;
-      <a href="#" id="logoutBtn" style="color:white;">Logout</a>
-    `
-  
-    document.getElementById("logoutBtn").onclick = (e)=>{
-      e.preventDefault()
-  
-      localStorage.removeItem("token")
-      localStorage.removeItem("studentId")
-      localStorage.removeItem("displayName")
-  
-      location.reload()
-    }
-  
-  }
-  
-  </script>
+
+  <div style="color:#fff;font-size:14px;">
+
+  <% if(typeof displayName !== "undefined" && displayName){ %>
+
+    <span><%= displayName %></span>
+    &nbsp;|&nbsp;
+    <a href="/logout" style="color:white;">Logout</a>
+
+  <% } else { %>
+
+    <a href="/register" style="color:white;">Register</a>
+    &nbsp;|&nbsp;
+    <a href="/login" style="color:white;">Login</a>
+
+  <% } %>
+
+  </div>
+
+</header>
