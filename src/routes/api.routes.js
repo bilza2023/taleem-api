@@ -131,6 +131,14 @@ router.post('/register', async (req, res) => {
 // LOGIN
 // --------------------
 
+// --------------------
+// LOGIN
+// --------------------
+
+// --------------------
+// LOGIN
+// --------------------
+
 router.post('/login', async (req, res) => {
 
   try {
@@ -155,20 +163,59 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: "invalid credentials" });
     }
 
+    // --------------------
+    // FETCH SUBSCRIPTIONS
+    // --------------------
+
+    const now = new Date();
+
+    const subs = await prisma.subscription.findMany({
+      where: {
+        studentId: student.id,
+        status: "active",
+        endDate: { gt: now }
+      },
+      select: {
+        classSlug: true
+      }
+    });
+
+    const subscriptions = subs.map(s => s.classSlug);
+
+    // --------------------
+    // CREATE JWT
+    // --------------------
+
     const token = jwt.sign(
       {
         studentId: student.id,
-        displayName: student.displayName
+        displayName: student.displayName,
+        subscriptions
       },
       JWT_SECRET,
       { expiresIn: "30d" }
     );
 
+    // --------------------
+    // SET COOKIE
+    // --------------------
+
+    res.cookie("token", token, {
+      httpOnly: true,   // safer (JS cannot read it)
+      sameSite: "lax",
+      path: "/",
+      maxAge: 1000 * 60 * 60 * 24 * 30  // 30 days
+    });
+
+    // --------------------
+    // RESPONSE
+    // --------------------
+
     res.json({
       success: true,
-      token,
       studentId: student.id,
-      displayName: student.displayName
+      displayName: student.displayName,
+      subscriptions
     });
 
   } catch (err) {

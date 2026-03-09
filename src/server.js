@@ -1,5 +1,7 @@
+
 const express = require('express');
 const app = express();
+const cookieParser = require('cookie-parser');
 
 const indexRoutes = require('./routes/index');
 const playerRoutes = require('./routes/player.routes');
@@ -17,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // static assets
 app.use(express.static('public'));
-
+app.use(cookieParser());
 // taleem player library
 app.use('/taleem-player', express.static('node_modules/taleem-player'));
 

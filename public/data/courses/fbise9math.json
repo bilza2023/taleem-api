@@ -1,0 +1,14 @@
+{
+  "slug": "fbise9math",
+  "title": "FBISE Grade 9 Mathematics",
+
+  "chapters": [
+    {
+      "slug": "fbise9math-ch1",
+      "title": "Testing 🌡️🌡️🌡️🌡️",
+      "image": "baloons.png",
+      "details": "Collect, organize and interpret data using charts and graphs.",
+      "lessons": 7
+    }
+  ]
+}

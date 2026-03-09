@@ -165,7 +165,8 @@
 
 <% course.chapters.forEach(function(ch,index){ %>
 
-<a class="card" href="/class?chapter=<%= ch.slug %>">
+<!-- <a class="card" href="/class?chapter=<%= ch.slug %>"> -->
+  <a class="card" href="/class?course=<%= course.slug %>&chapter=<%= ch.slug %>">
 
 <div class="thumb">
 <img src="/images/<%= ch.image %>" alt="">
