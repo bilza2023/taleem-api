@@ -1,4 +1,5 @@
 <%- include("../partials/head",{title:"Ask Question"}) %>
+
 <%- include("../partials/main-nav") %>
 
 <style>
@@ -7,117 +8,115 @@
   background:linear-gradient(135deg,#1c6fb8,#0f4f8a);
   color:white;
   text-align:center;
-  padding:55px 20px 60px 20px;
+  padding:45px 20px 50px 20px;
   margin-bottom:35px;
   box-shadow:0 6px 20px rgba(0,0,0,0.15);
 }
 
 .hero h1{
   margin:0;
-  font-size:36px;
+  font-size:34px;
 }
 
-.formBox{
-  max-width:600px;
+.ask-box{
+  max-width:700px;
   margin:auto;
   background:white;
-  padding:30px;
+  padding:35px;
   border-radius:10px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.12);
+  box-shadow:0 8px 25px rgba(0,0,0,0.12);
 }
 
-textarea{
+.ask-box label{
+  font-weight:600;
+  display:block;
+  margin-bottom:6px;
+}
+
+.ask-box input,
+.ask-box textarea{
   width:100%;
-  height:140px;
   padding:10px;
   border:1px solid #ccc;
   border-radius:6px;
-  font-size:14px;
+  font-size:15px;
 }
 
-.btn{
-  margin-top:12px;
-  padding:12px 18px;
+.ask-box textarea{
+  resize:vertical;
+}
+
+.ask-box button{
   background:#1c6fb8;
   color:white;
   border:none;
+  padding:12px 22px;
   border-radius:6px;
+  font-size:15px;
   cursor:pointer;
 }
 
-.btn:hover{
-  background:#0f4f8a;
+.ask-box button:hover{
+  background:#15558e;
 }
 
-.message{
-  margin-top:12px;
-  font-size:14px;
+.success{
+  background:#d4edda;
+  color:#155724;
+  padding:12px;
+  border-radius:6px;
+  margin-bottom:18px;
 }
 
 </style>
+
 
 <header class="hero">
 <h1>Ask a Question</h1>
 </header>
 
+
 <div class="wrapper">
 
-<div class="formBox">
+<div class="ask-box">
 
-<p><strong>Lesson:</strong> <%= lesson %></p>
+<% if (success) { %>
+  <div class="success">
+    ✅ Your question has been submitted successfully.
+  </div>
+<% } %>
 
-<form id="askForm">
+<form method="POST" action="/api/questions">
 
-<textarea name="questionText" placeholder="Write your question here..." required></textarea>
+<input type="hidden" name="contentSlug" value="<%= contentSlug %>">
+<input type="hidden" name="contentType" value="<%= contentType %>">
+<input type="hidden" name="studentId" value="<%= studentId %>">
 
-<button class="btn">Submit Question</button>
+<label>Lesson</label>
+<input type="text" value="<%= contentSlug %>" disabled>
+
+<br><br>
+
+<label>Your Question</label>
+
+<textarea
+name="questionText"
+rows="6"
+placeholder="Write your question clearly..."
+required
+></textarea>
+
+<br><br>
+
+<button type="submit">
+Submit Question
+</button>
 
 </form>
 
-<div id="msg" class="message"></div>
-
 </div>
 
 </div>
 
-
-<script>
-
-const form = document.getElementById("askForm")
-const msg = document.getElementById("msg")
-
-form.addEventListener("submit", async (e)=>{
-
-  e.preventDefault()
-
-  const studentId = localStorage.getItem("studentId")
-
-  if(!studentId){
-    msg.innerHTML = "Please login first."
-    return
-  }
-
-  const res = await fetch("/api/questions",{
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body: JSON.stringify({
-      studentId,
-      lessonSlug: "<%= lesson %>",
-      questionText: form.questionText.value
-    })
-  })
-
-  const json = await res.json()
-
-  if(json.success){
-    msg.innerHTML = "Question submitted successfully."
-    form.reset()
-  }else{
-    msg.innerHTML = json.error || "Submission failed"
-  }
-
-})
-
-</script>
 
 <%- include("../partials/footer") %>

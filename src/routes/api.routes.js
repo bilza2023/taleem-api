@@ -231,35 +231,65 @@ router.post('/login', async (req, res) => {
 // ASK QUESTION
 // --------------------
 
+// router.post('/questions', async (req, res) => {
+
+//   try {
+
+//     const { studentId, lessonSlug, questionText } = req.body;
+
+//     if (!studentId || !lessonSlug || !questionText) {
+//       return res.status(400).json({ error: "missing fields" });
+//     }
+
+//     const question = await prisma.question.create({
+//       data: {
+//         studentId,
+//         lessonSlug,
+//         questionText
+//       }
+//     });
+
+//     res.json({
+//       success: true,
+//       questionId: question.id
+//     });
+
+//   } catch (err) {
+//     res.status(500).json({ error: "question save failed" });
+//   }
+
+// });
 router.post('/questions', async (req, res) => {
 
   try {
 
-    const { studentId, lessonSlug, questionText } = req.body;
+    const { studentId, contentSlug, contentType, questionText } = req.body;
 
-    if (!studentId || !lessonSlug || !questionText) {
-      return res.status(400).json({ error: "missing fields" });
+    if (!studentId || !contentSlug || !questionText) {
+      return res.send("missing fields");
     }
 
     const question = await prisma.question.create({
       data: {
         studentId,
-        lessonSlug,
+        contentSlug,
+        contentType,
         questionText
       }
     });
 
-    res.json({
-      success: true,
-      questionId: question.id
-    });
+    // redirect back with success message
+    res.redirect(
+      `/ask?contentSlug=${contentSlug}&contentType=${contentType}&success=1`
+    );
 
   } catch (err) {
-    res.status(500).json({ error: "question save failed" });
+
+    res.send("question save failed");
+
   }
 
 });
-
 // --------------------
 // CREATE ARTICLE
 // --------------------

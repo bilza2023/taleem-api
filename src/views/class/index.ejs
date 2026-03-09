@@ -69,13 +69,42 @@ html, body {
 
     </div>
 
+    
     <%- include("syllabus-panel") %>
+    
+  </div>
+  
+</div>
+
+
+<!-- Answer Panel -->
+<div id="answers-view">
+
+  <div class="answers-container">
+
+    <div class="answers-header">
+      <h2>Discussion / FAQ</h2>
+      <a
+      href="/ask?contentType=deck&contentSlug=<%= chapter %>"
+      class="ask-question-btn"
+    >
+      Ask Question
+    </a>
+    </div>
+
+    <div class="answers-search">
+      <input 
+        type="text" 
+        id="discussion-search" 
+        placeholder="Search discussion..."
+      >
+    </div>
+
+    <div id="discussion-list" class="discussion-list"></div>
 
   </div>
 
 </div>
-
-<%- include("answer-panel") %>
 
 <script type="module" src="/js/class-page.js"></script>
 

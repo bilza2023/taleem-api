@@ -43,6 +43,7 @@ model Subscription {
 
   @@unique([studentId, classSlug])
 }
+
 model Question {
   id           String   @id @default(cuid())
 
