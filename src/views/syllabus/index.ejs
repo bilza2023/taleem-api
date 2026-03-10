@@ -1,5 +1,5 @@
-<%- include("../partials/head",{title:course.title}) %>
 
+<%- include("../partials/head",{title:"Syllabus"}) %>
 <%- include("../partials/main-nav") %>
 
 <style>
@@ -127,26 +127,22 @@
 
 
 <header class="hero">
-<h1><%= course.title %></h1>
+<h1 id="course-title">Loading...</h1>
 </header>
 
 
 
 <div class="wrapper">
 
-<!-- stats -->
-
 <div class="stats-bar">
 
 <div class="stat">
-<div class="stat-number"><%= course.chapters.length %></div>
+<div class="stat-number" id="chapters-count">0</div>
 <div class="stat-label">Chapters</div>
 </div>
 
 <div class="stat">
-<div class="stat-number">
-<%= course.chapters.reduce((sum,c)=>sum + c.lessons,0) %>
-</div>
+<div class="stat-number" id="lessons-count">0</div>
 <div class="stat-label">Lessons</div>
 </div>
 
@@ -159,46 +155,84 @@
 
 
 
-<!-- chapters -->
-
-<div class="grid">
-
-<% course.chapters.forEach(function(ch,index){ %>
-
-<!-- <a class="card" href="/class?chapter=<%= ch.slug %>"> -->
-  <a class="card" href="/class?course=<%= course.slug %>&chapter=<%= ch.slug %>">
-
-<div class="thumb">
-<img src="/images/<%= ch.image %>" alt="">
-</div>
-
-<div class="cardBody">
-
-<div class="chapterNumber">
-Chapter <%= index + 1 %>
-</div>
-
-<div class="chapterTitle">
-<%= ch.title %>
-</div>
-
-<div class="chapterDetails">
-<%= ch.details %>
-</div>
-
-<div class="chapterStats">
-Lessons available: <%= ch.lessons %>
-</div>
+<div class="grid" id="chapters-grid"></div>
 
 </div>
 
-</a>
 
-<% }) %>
 
-</div>
+<script type="module">
 
-</div>
+import { loadSyllabus, getSyllabus } from "/js/syllabusObject.js"
+// debugger;
+async function init(){
+
+  await loadSyllabus()
+
+  const syllabus = getSyllabus()
+
+  const params = new URLSearchParams(window.location.search)
+  const courseSlug = params.get("course")
+
+  const course = syllabus.getCourse(courseSlug)
+
+  if(!course){
+    document.getElementById("course-title").innerText = "Course not found"
+    return
+  }
+
+  // title
+  document.getElementById("course-title").innerText = course.title
+
+  // stats
+  document.getElementById("chapters-count").innerText = course.chapters.length
+
+  const lessons = course.chapters.reduce((sum,c)=>sum + (c.lessons || 0),0)
+
+  document.getElementById("lessons-count").innerText = lessons
+
+  // render chapters
+  const grid = document.getElementById("chapters-grid")
+
+  course.chapters.forEach((ch,index)=>{
+
+    const card = `
+      <a class="card" href="/class?chapter=${ch.slug}">
+        <div class="thumb">
+          <img src="/images/${ch.image}" alt="">
+        </div>
+
+        <div class="cardBody">
+
+          <div class="chapterNumber">
+            Chapter ${index + 1}
+          </div>
+
+          <div class="chapterTitle">
+            ${ch.title}
+          </div>
+
+          <div class="chapterDetails">
+            ${ch.details || ""}
+          </div>
+
+          <div class="chapterStats">
+            Lessons available: ${ch.lessons || 0}
+          </div>
+
+        </div>
+      </a>
+    `
+
+    grid.insertAdjacentHTML("beforeend", card)
+
+  })
+
+}
+
+init()
+
+</script>
 
 
 

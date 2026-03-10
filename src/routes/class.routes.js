@@ -27,9 +27,9 @@ router.get('/', (req, res) => {
   // ACCESS CHECK
   // --------------------
 
-  if (!subs.includes(course)) {
-    return res.redirect('/subscribe')
-  }
+  // if (!subs.includes(course)) {
+  //   return res.redirect('/subscribe')
+  // }
 
   // --------------------
   // ALLOW ACCESS
