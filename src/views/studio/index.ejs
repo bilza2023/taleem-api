@@ -1,28 +1,39 @@
+<%- include("../partials/head",{title:"My Questions"}) %>
 
-<!DOCTYPE html>
-<html>
-<head>
-<title>My Questions</title>
+<%- include("../partials/main-nav") %>
 
 <style>
 
-body{
-  font-family:Arial, Helvetica, sans-serif;
-  max-width:800px;
-  margin:auto;
-  padding:30px;
+.hero{
+  background:linear-gradient(135deg,#1c6fb8,#0f4f8a);
+  color:white;
+  text-align:center;
+  padding:45px 20px 50px 20px;
+  margin-bottom:35px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.15);
+}
+
+.hero h1{
+  margin:0;
+  font-size:34px;
 }
 
 .qa{
-  margin-bottom:35px;
+  background:white;
+  border-radius:8px;
+  padding:20px;
+  margin-bottom:20px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.1);
 }
 
 .question{
   font-weight:bold;
+  margin-bottom:8px;
 }
 
 .answer{
-  margin-top:8px;
+  margin-top:6px;
+  color:#333;
 }
 
 .links{
@@ -30,36 +41,57 @@ body{
 }
 
 .links a{
-  margin-right:10px;
+  margin-right:12px;
+  color:#1c6fb8;
+  text-decoration:none;
 }
 
-hr{
-  margin-top:25px;
+.links a:hover{
+  text-decoration:underline;
+}
+
+.meta{
+  margin-top:8px;
+  font-size:13px;
+  color:#777;
+}
+
+.empty{
+  text-align:center;
+  color:#666;
+  margin-top:40px;
 }
 
 </style>
-</head>
 
-<body>
 
+<header class="hero">
 <h1>My Questions</h1>
+</header>
+
+
+<div class="wrapper">
 
 <div id="questions"></div>
 
-<script>
+</div>
 
-const studentId = "<%= studentId %>";
+
+<script>
 
 async function loadQuestions(){
 
-  const res = await fetch(`/api/questions/student/${studentId}`);
-
+  const res = await fetch("/api/questions/student");
   const data = await res.json();
 
   const container = document.getElementById("questions");
 
   if(!data.questions.length){
-    container.innerHTML = "<p>You have not asked any questions yet.</p>";
+    container.innerHTML = `
+      <div class="empty">
+        <p>You have not asked any questions yet.</p>
+      </div>
+    `;
     return;
   }
 
@@ -68,6 +100,7 @@ async function loadQuestions(){
     let linksHTML = "";
 
     if(q.links){
+
       const links = q.links.split(",");
 
       links.forEach(l => {
@@ -77,7 +110,10 @@ async function loadQuestions(){
         linksHTML += `<a href="/${type}/${slug}">${slug}</a>`;
 
       });
+
     }
+
+    const date = new Date(q.createdAt).toLocaleDateString();
 
     const block = `
       <div class="qa">
@@ -98,9 +134,11 @@ async function loadQuestions(){
           ${linksHTML}
         </div>
 
-      </div>
+        <div class="meta">
+          Asked on: ${date}
+        </div>
 
-      <hr>
+      </div>
     `;
 
     container.insertAdjacentHTML("beforeend", block);
@@ -113,5 +151,5 @@ loadQuestions();
 
 </script>
 
-</body>
-</html>
+
+<%- include("../partials/footer") %>

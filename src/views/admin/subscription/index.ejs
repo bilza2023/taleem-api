@@ -1,0 +1,119 @@
+<%- include("../../partials/head",{title:"Subscriptions"}) %>
+<%- include("../../partials/main-nav") %>
+
+<style>
+
+.wrapper{
+  max-width:1000px;
+  margin:auto;
+  padding:30px;
+}
+
+form{
+  background:#f5f5f5;
+  padding:20px;
+  border-radius:6px;
+  margin-bottom:30px;
+}
+
+input,select{
+  padding:8px;
+  margin-right:10px;
+}
+
+button{
+  padding:8px 14px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,td{
+  border-bottom:1px solid #ddd;
+  padding:10px;
+  text-align:left;
+}
+
+th{
+  background:#f0f0f0;
+}
+
+</style>
+
+<div class="wrapper">
+
+<h2>Create Subscription</h2>
+
+<form method="POST" action="/admin/subscription/create">
+
+  <input
+    type="email"
+    name="email"
+    placeholder="Student email"
+    required
+  >
+
+  <input
+    type="text"
+    name="classSlug"
+    placeholder="Course slug"
+    required
+  >
+
+  <select name="months">
+    <option value="1">1 month</option>
+    <option value="3">3 months</option>
+    <option value="6">6 months</option>
+    <option value="12">12 months</option>
+  </select>
+
+  <button type="submit">
+    Add Subscription
+  </button>
+
+</form>
+
+
+<h2>Existing Subscriptions</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Email</th>
+<th>Course</th>
+<th>Status</th>
+<th>Start</th>
+<th>End</th>
+</tr>
+</thead>
+
+<tbody>
+
+<% subscriptions.forEach(sub => { %>
+
+<tr>
+
+<td><%= sub.student.email %></td>
+<td><%= sub.classSlug %></td>
+<td><%= sub.status %></td>
+
+<td>
+<%= new Date(sub.startDate).toLocaleDateString() %>
+</td>
+
+<td>
+<%= new Date(sub.endDate).toLocaleDateString() %>
+</td>
+
+</tr>
+
+<% }) %>
+
+</tbody>
+
+</table>
+
+</div>

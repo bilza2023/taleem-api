@@ -1,64 +1,45 @@
-
-//class.routes.js
-
-const express = require('express');
-const router = express.Router();
-const jwt = require('jsonwebtoken');
-
-const JWT_SECRET = "taleem-secret-key";
+const express = require('express')
+const router = express.Router()
 
 router.get('/', (req, res) => {
 
-  const { chapter, course } = req.query;
+  const { chapter, course } = req.query
 
   if (!chapter) {
-    return res.send("chapter not specified");
+    return res.send("chapter not specified")
   }
 
-  if (!course) {
-    return res.send("course not specified");
+  // if (!course) {
+  //   return res.send("course not specified")
+  // }
+
+  // --------------------
+  // USER MUST BE LOGGED IN
+  // --------------------
+
+  if (!req.user) {
+    return res.redirect('/login')
+  }
+
+  const subs = req.user.subscriptions || []
+
+  // --------------------
+  // ACCESS CHECK
+  // --------------------
+
+  if (!subs.includes(course)) {
+    return res.redirect('/subscribe')
   }
 
   // --------------------
-  // READ TOKEN (from cookie)
+  // ALLOW ACCESS
   // --------------------
 
-  const token = req.cookies?.token;
+  res.render('class/index', {
+    chapter,
+    course
+  })
 
-  if (!token) {
-    return res.redirect('/login');
-  }
+})
 
-  try {
-
-    const payload = jwt.verify(token, JWT_SECRET);
-
-    const subs = payload.subscriptions || [];
-    console.log("subs", subs);
-
-    // --------------------
-    // ACCESS CHECK (course level)
-    // --------------------
-
-    if (!subs.includes(course)) {
-      return res.redirect('/subscribe');
-    }
-
-    // --------------------
-    // ALLOW ACCESS
-    // --------------------
-
-    res.render('class/index', {
-      chapter,
-      course
-    });
-
-  } catch (err) {
-
-    return res.redirect('/login');
-
-  }
-
-});
-
-module.exports = router;
+module.exports = router
