@@ -117,12 +117,13 @@ async function init(){
     const params = new URLSearchParams(window.location.search);
     const deckFromUrl = params.get("deck");
 
-    const deck = deckFromUrl || links[0].slug;
+    // const deck = deckFromUrl || links[0].slug;
+    const deck = deckFromUrl || links[0].deck;
 
     await loadDeck(deck);
     const askBtn = document.querySelector(".ask-question-btn");
     if(askBtn){
-      askBtn.href = `/ask?contentType=deck&contentSlug=${deckId}`;
+      askBtn.href = `/ask?contentType=deck&contentSlug=${deck}`;
     }
   }
 
