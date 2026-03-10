@@ -1,4 +1,3 @@
-
 import {taleemPlayerApp,createSilentTimer} from "./taleem-player-app.esm.js";
 
 import { renderDiscussion,enableDiscussionAccordion,enableDiscussionSearch } from "/js/discussion-ui.js";
@@ -7,6 +6,8 @@ import {createTaleemPlayer,resolveAssetPaths,resolveBackground,getDeckEndTime} f
 
 import { useMath } from "/js/useMath.js";
 import { renderSyllabus } from "/js/syllabus-ui.js";
+
+import { loadSyllabus, getSyllabus } from "/js/syllabusObject.js";
 
 ////////////////////////////////////////////////////////////
 let player;
@@ -18,15 +19,14 @@ async function loadDeck(deckId){
   const res = await fetch(`/api/deck/${deckId}`);
   const presentation = await res.json();
 
-/* --------------------------
-   DISCUSSION (DB)
--------------------------- */
+  /* --------------------------
+     DISCUSSION (DB)
+  -------------------------- */
 
-const discRes = await fetch(`/api/discussion/deck/${deckId}`);
-const discData = await discRes.json();
+  const discRes = await fetch(`/api/discussion/deck/${deckId}`);
+  const discData = await discRes.json();
 
-const discussion = discData.discussion || [];
-console.log("discussion",discussion);
+  const discussion = discData.discussion || [];
 
   renderDiscussion(discussion);
   enableDiscussionAccordion();
@@ -95,12 +95,20 @@ console.log("discussion",discussion);
 
 async function init(){
 
-  const chapter = document.getElementById("player-view").dataset.chapter;
+  const chapterSlug = document.getElementById("player-view").dataset.chapter;
 
-  const res = await fetch(`/api/chapter/${chapter}`);
-  const data = await res.json();
+  // load syllabus
+  await loadSyllabus();
+  const syllabus = getSyllabus();
 
-  const links = data.links;
+  const chapter = syllabus.getChapter(chapterSlug);
+
+  if(!chapter){
+    console.error("chapter not found:", chapterSlug);
+    return;
+  }
+
+  const links = chapter.decks;
 
   renderSyllabus(links);
 
@@ -109,10 +117,13 @@ async function init(){
     const params = new URLSearchParams(window.location.search);
     const deckFromUrl = params.get("deck");
 
-    const deck = deckFromUrl || links[0].deck;
+    const deck = deckFromUrl || links[0].slug;
 
     await loadDeck(deck);
-
+    const askBtn = document.querySelector(".ask-question-btn");
+    if(askBtn){
+      askBtn.href = `/ask?contentType=deck&contentSlug=${deckId}`;
+    }
   }
 
   const sidebar = document.getElementById("sidebar");
@@ -122,7 +133,7 @@ async function init(){
   };
 
   /* --------------------------
-     ANSWER PANEL (ORIGINAL)
+     ANSWER PANEL
   -------------------------- */
 
   const answersView = document.getElementById("answers-view");
@@ -139,9 +150,6 @@ async function init(){
 
 }
 
-/* --------------------------
-   START
--------------------------- */
 /* --------------------------
    THEMES
 -------------------------- */
@@ -163,7 +171,6 @@ if(grayBtn){
   grayBtn.onclick = () => setTheme("#1f2933", "#e5e7eb");
 }
 
-
 if(creamBtn){
   creamBtn.onclick = () => setTheme("#fffaf0", "#3a2f1f");
 }
@@ -171,7 +178,6 @@ if(creamBtn){
 if(blueBtn){
   blueBtn.onclick = () => setTheme("#798ded", "#010518");
 }
-/* restore saved theme */
 
 const savedBg = localStorage.getItem("taleem-bg");
 const savedText = localStorage.getItem("taleem-text");

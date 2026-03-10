@@ -6,7 +6,6 @@
 <title>Taleem Class</title>
 
 <link rel="stylesheet" href="/css/taleem-player-app.css">
-<!-- <link rel="stylesheet" href="/css/taleem.css"> -->
 <link rel="stylesheet" href="/player/player.css">
 <link rel="stylesheet" href="/css/answer.css">
 <link rel="stylesheet" href="/css/syllabus.css">
@@ -19,37 +18,37 @@ src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 
 <script defer
 src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
 <style>
 
 :root {
-    --backgroundColor: #798ded;
-    --primaryColor: #010518;
-  }
-  
-  body{
+  --backgroundColor: #798ded;
+  --primaryColor: #010518;
+}
+
+body{
   background:var(--backgroundColor);
   color:var(--primaryColor);
   transition:background 0.25s ease, color 0.25s ease;
 }
-  /* allow the page to scroll vertically */
+
 html, body {
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
-/* main layout should not trap overflow */
 .page {
   min-height: 100vh;
   overflow-y: auto;
 }
 
-/* answer panel scroll */
 #answers-view {
   max-height: 100vh;
   overflow-y: auto;
   padding: 20px;
 }
+
 </style>
 </head>
 
@@ -69,27 +68,27 @@ html, body {
 
     </div>
 
-    
     <%- include("syllabus-panel") %>
-    
+
   </div>
-  
+
 </div>
 
 
-<!-- Answer Panel -->
+<!-- Discussion / FAQ -->
+
 <div id="answers-view">
 
   <div class="answers-container">
 
     <div class="answers-header">
       <h2>Discussion / FAQ</h2>
-      <a
-      href="/ask?contentType=deck&contentSlug=<%= chapter %>"
-      class="ask-question-btn"
-    >
-      Ask Question
-    </a>
+
+      <!-- JS will inject deck slug -->
+      <a href="#" class="ask-question-btn">
+        Ask Question
+      </a>
+
     </div>
 
     <div class="answers-search">
