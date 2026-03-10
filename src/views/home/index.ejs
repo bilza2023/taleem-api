@@ -104,17 +104,22 @@
 
 <!-- posters -->
 
-<div class="posters">
+  <div class="posters">
 
-<a class="poster" href="/syllabus?course=fbise8math">
-<img src="/images/fbise8math-poster.png">
-</a>
-
-<a class="poster" href="/syllabus?course=fbise9math">
-<img src="/images/fbise9math-poster.png">
-</a>
-
-</div>
+    <% courses.forEach(course => { %>
+    
+    <a class="poster" href="/syllabus?course=<%= course.slug %>">
+    
+    <img 
+    src="/images/<%= course.slug %>-poster.png"
+    onerror="this.onerror=null;this.src='/images/taleem.webp';"
+    >
+    
+    </a>
+    
+    <% }) %>
+    
+    </div>
 
 
 <%- include("../partials/stats") %>
