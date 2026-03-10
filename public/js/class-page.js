@@ -19,6 +19,11 @@ async function loadDeck(deckId){
   const res = await fetch(`/api/deck/${deckId}`);
   const presentation = await res.json();
 
+
+  if(!res.ok){
+    console.error("Deck not found:", deckId);
+    return;
+  }
   /* --------------------------
      DISCUSSION (DB)
   -------------------------- */
