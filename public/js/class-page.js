@@ -1,8 +1,7 @@
-import {taleemPlayerApp,createSilentTimer} from "./taleem-player-app.esm.js";
 
-import { renderDiscussion,enableDiscussionAccordion,enableDiscussionSearch } from "/js/discussion-ui.js";
-
-import {createTaleemPlayer,resolveAssetPaths,resolveBackground,getDeckEndTime} from "/js/taleem-player.esm.js";
+import { renderDiscussion, enableDiscussionAccordion, enableDiscussionSearch } from "/js/discussion-ui.js";
+import { taleemPlayerApp, createSilentTimer } from "./taleem-player-app.esm.js";
+import { createTaleemPlayer, resolveAssetPaths, resolveBackground, getDeckEndTime } from "/js/taleem-player.esm.js";
 
 import { useMath } from "/js/useMath.js";
 import { renderSyllabus } from "/js/syllabus-ui.js";
@@ -10,59 +9,82 @@ import { renderSyllabus } from "/js/syllabus-ui.js";
 import { loadSyllabus, getSyllabus } from "/js/syllabusObject.js";
 
 ////////////////////////////////////////////////////////////
-let player;
-let duration = 0;
-let audio = null;
+// 🔷 LOAD DECK DATA (pure)
+////////////////////////////////////////////////////////////
 
-async function loadDeck(deckId){
+async function loadDeckData(deckId){
 
   const res = await fetch(`/api/deck/${deckId}`);
-  const presentation = await res.json();
-
-
   if(!res.ok){
     console.error("Deck not found:", deckId);
-    return;
+    return null;
   }
-  /* --------------------------
-     DISCUSSION (DB)
-  -------------------------- */
+
+  const presentation = await res.json();
 
   const discRes = await fetch(`/api/discussion/deck/${deckId}`);
   const discData = await discRes.json();
 
   const discussion = discData.discussion || [];
 
-  renderDiscussion(discussion);
-  enableDiscussionAccordion();
-  enableDiscussionSearch();
+  return { presentation, discussion };
+}
+
+////////////////////////////////////////////////////////////
+// 🔷 AUDIO / TIMER RESOLVER
+////////////////////////////////////////////////////////////
+
+async function getTimer(deckSlug){
+
+  async function exists(url){
+    try{
+      const res = await fetch(url, { method: "HEAD" });
+      return res.ok;
+    }catch{
+      return false;
+    }
+  }
+
+  const base = "/content/audio/";
+  const opus = `${base}${deckSlug}.opus`;
+  const ogg  = `${base}${deckSlug}.ogg`;
+  const mp3  = `${base}${deckSlug}.mp3`;
+
+  if(await exists(opus)){
+    return new Audio(opus);
+  }
+
+  if(await exists(ogg)){
+    return new Audio(ogg);
+  }
+
+  if(await exists(mp3)){
+    return new Audio(mp3);
+  }
+
+  return null;
+}
+
+////////////////////////////////////////////////////////////
+// 🔷 PLAYER BOOT (one-time per page)
+////////////////////////////////////////////////////////////
+
+async function bootPlayer(deckId, presentation){
 
   const imageBase = "/images/";
-  const audioBase = "/audio/";
 
   resolveAssetPaths(presentation, imageBase);
   resolveBackground(presentation, imageBase);
 
-  player = createTaleemPlayer({
+  const player = createTaleemPlayer({
     mount: "#app",
     deck: presentation
   });
 
-  duration = getDeckEndTime(presentation);
-
-  if(presentation.audio){
-    audio = new Audio(`${audioBase}${presentation.audio}`);
-  }
-
-  /* --------------------------
-     PLAYER APP
-  -------------------------- */
-
-  const playBtn = document.getElementById("play-btn");
-  const pauseBtn = document.getElementById("pause-btn");
-  const stopBtn = document.getElementById("stop-btn");
-  const scrub = document.getElementById("scrub");
-  const timeEl = document.getElementById("time");
+  const duration = getDeckEndTime(presentation);
+  debugger;
+  // 🔊 audio
+  const audio = await getTimer(deckId);
 
   const timer = audio
     ? {
@@ -73,36 +95,40 @@ async function loadDeck(deckId){
       }
     : createSilentTimer();
 
-  if (!window._taleemPlayerApp) {
+  // 🎛 UI
+  const playBtn = document.getElementById("play-btn");
+  const pauseBtn = document.getElementById("pause-btn");
+  const stopBtn = document.getElementById("stop-btn");
+  const scrub = document.getElementById("scrub");
+  const timeEl = document.getElementById("time");
 
-    window._taleemPlayerApp = true;
-
-    taleemPlayerApp({
-      player,
-      timer,
-      duration,
-      ui:{
-        playBtn,
-        pauseBtn,
-        stopBtn,
-        scrub,
-        timeEl
-      },
-      afterRender(){
-        const slide = document.querySelector("#app .slide");
-        if(slide) useMath(slide);
-      }
-    });
-
-  }
+  taleemPlayerApp({
+    player,
+    timer,
+    duration,
+    ui:{
+      playBtn,
+      pauseBtn,
+      stopBtn,
+      scrub,
+      timeEl
+    },
+    afterRender(){
+      const slide = document.querySelector("#app .slide");
+      if(slide) useMath(slide);
+    }
+  });
 
 }
+
+////////////////////////////////////////////////////////////
+// 🔷 INIT (orchestrator only)
+////////////////////////////////////////////////////////////
 
 async function init(){
 
   const chapterSlug = document.getElementById("player-view").dataset.chapter;
 
-  // load syllabus
   await loadSyllabus();
   const syllabus = getSyllabus();
 
@@ -117,31 +143,48 @@ async function init(){
 
   renderSyllabus(links);
 
-  if(links.length){
+  if(!links.length) return;
 
-    const params = new URLSearchParams(window.location.search);
-    const deckFromUrl = params.get("deck");
+  // 🔷 resolve deck
+  const params = new URLSearchParams(window.location.search);
+  let deck = params.get("deck");
 
-    // const deck = deckFromUrl || links[0].slug;
-    const deck = deckFromUrl || links[0].deck;
+  if(!deck){
+    deck = links[0].deck;
 
-    await loadDeck(deck);
-    const askBtn = document.querySelector(".ask-question-btn");
-    if(askBtn){
-      askBtn.href = `/ask?contentType=deck&contentSlug=${deck}`;
-    }
+    // ✅ fix URL silently
+    const url = new URL(window.location.href);
+    url.searchParams.set("deck", deck);
+    window.history.replaceState({}, "", url);
   }
 
-  const sidebar = document.getElementById("sidebar");
+  // 🔷 load data
+  const data = await loadDeckData(deck);
+  if(!data) return;
 
+  const { presentation, discussion } = data;
+
+  // 🔷 discussion
+  renderDiscussion(discussion);
+  enableDiscussionAccordion();
+  enableDiscussionSearch();
+
+  // 🔷 ask button
+  const askBtn = document.querySelector(".ask-question-btn");
+  if(askBtn){
+    askBtn.href = `/ask?contentType=deck&contentSlug=${deck}`;
+  }
+
+  // 🔷 player
+  await bootPlayer(deck, presentation);
+
+  // 🔷 sidebar toggle
+  const sidebar = document.getElementById("sidebar");
   document.getElementById("toggle-sidebar").onclick = () => {
     sidebar.classList.toggle("closed");
   };
 
-  /* --------------------------
-     ANSWER PANEL
-  -------------------------- */
-
+  // 🔷 answer panel
   const answersView = document.getElementById("answers-view");
   const playerView = document.getElementById("player-view");
 
@@ -156,9 +199,9 @@ async function init(){
 
 }
 
-/* --------------------------
-   THEMES
--------------------------- */
+////////////////////////////////////////////////////////////
+// 🔷 THEMES (unchanged)
+////////////////////////////////////////////////////////////
 
 function setTheme(bg, text){
 
@@ -192,5 +235,7 @@ if(savedBg && savedText){
   document.documentElement.style.setProperty("--backgroundColor", savedBg);
   document.documentElement.style.setProperty("--primaryColor", savedText);
 }
+
+////////////////////////////////////////////////////////////
 
 init();

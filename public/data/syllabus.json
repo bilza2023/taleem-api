@@ -12,28 +12,21 @@
           "decks": [
             {
               "anchor": "fbise8math-ch1",
-              "title": "Golden Deck",
-              "deck": "gold",
+              "title": "NUmber Families",
+              "deck": "number-families",
               "tag": "concept",
-              "image": "atom.png"
+              "image": "number-families-2.jpg"
             },
             {
               "anchor": "fbise8math-ch1",
-              "title": "equation-demo",
+              "title": "10 Important Equations",
               "deck": "equation-demo",
               "tag": "concept",
               "image": "eq.webp"
             },
             {
               "anchor": "fbise8math-ch1",
-              "title": "Factorization Basics",
-              "deck": "demo",
-              "tag": "concept",
-              "image": "box.webp"
-            },
-            {
-              "anchor": "fbise8math-ch1",
-              "title": "Understanding Factors",
+              "title": "Bodmas Rules",
               "deck": "bodmas",
               "tag": "lab",
               "image": "eq.webp"

@@ -4,7 +4,7 @@
 
   "background": {
     "backgroundColor": "#111111",
-    "backgroundImage": "/physics_bg.webp",
+    "backgroundImage": "physics_bg.webp",
     "backgroundImageOpacity": 0.25
   },
 
@@ -16,7 +16,7 @@
       "data": [
         {
           "name": "title",
-          "content": "BODMAS Rule",
+          "content": "BODMAS Rules",
           "showAt": 0
         },
         {
